@@ -1,0 +1,1640 @@
+
+\documentclass[12pt,a4paper,openright,twoside]{report}
+
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{fancyhdr}
+
+\usepackage{indentfirst}
+
+\usepackage{graphicx}
+
+\usepackage{newlfont}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%librerie matematiche
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{amsthm}
+\usepackage{picture}
+\usepackage{geometry}
+\usepackage{enumerate}
+\usepackage{tikz-cd}
+\tikzset{curarrow/.style={rounded corners=8pt,execute at begin to={every node/.style={fill=red}}, to path={-- ([xshift=50pt]\tikztostart.center) |- (#1) node[fill=white] {$\scriptstyle d^*$} -| ([xshift=-50pt]\tikztotarget.center) -- (\tikztotarget)}}}
+\usepackage{enumitem}
+\usepackage{varwidth}
+\usepackage{tasks}
+\usepackage[natbib=true,style=numeric,sorting=none,backend=biber]{biblatex}
+\addbibresource{biblio.bib}
+\usepackage{comment}
+\usepackage{csquotes}
+%
+\oddsidemargin=30pt \evensidemargin=20pt%impostano i margini
+\hyphenation{pa-ro-la}
+\pagestyle{fancy}\addtolength{\headwidth}{20pt}
+\setlength{\headheight}{14.5pt}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection \ #1}{}}
+\rhead[\fancyplain{}{\bfseries\leftmark}]{\fancyplain{}{\bfseries\thepage}}
+\cfoot{}
+\linespread{1.3}
+\textwidth=450pt\oddsidemargin=0pt
+\newcommand{\apo}{\`}
+\newtheorem{def1}{Definizione}[chapter]
+\newtheorem{lem1}[def1]{Lemma}
+\newtheorem{prop1}[def1]{Proposizione}
+\newtheorem{teo1}[def1]{Teorema}
+\newtheorem{cor1}[def1]{Corollario}
+\theoremstyle{remark}
+\newtheorem{ese1}[def1]{Esempio}
+\newtheorem{oss1}[def1]{Osservazione}
+\begin{document}
+	\begin{titlepage}
+		\begin{center}
+			{
+				{\Large
+					{\textsc{
+						Alma Mater Studiorum $\cdot$ Universit\apo a di Bologna
+					}}
+				}
+			}
+			\rule[0.1cm]{15.8cm}{0.1mm}
+			\rule[0.5cm]{15.8cm}{0.6mm}
+			{\small
+				{\bf 
+					SCUOLA DI SCIENZE\\
+					Corso di Laurea in Matematica % adattare al proprio CdL
+				}
+			}
+			\end{center}
+			\vspace{25mm}
+			\begin{center}
+				{\LARGE{\bf LA COOMOLOGIA DI DE RHAM}}\\
+				\vspace{3mm}
+				{\large
+					{\bf
+						Tesi di Laurea in Topologia
+					}
+				}
+			\end{center}
+			\vspace{40mm}
+			\par
+			\noindent
+			\begin{minipage}[t]{0.47\textwidth}
+				{\large
+					{\bf
+						Relatore:\\
+						Chiar.mo Prof.\\
+						GIOVANNI MONGARDI
+					}
+				}
+			\end{minipage}
+			\hfill
+			\begin{minipage}[t]{0.47\textwidth}\raggedleft
+				{\large
+					{\bf 
+						Presentata da:\\
+						 \ \ \  MARCO VITALI
+					}
+				}
+			\end{minipage}
+			\vspace{40mm}
+			\begin{center}
+			{\large
+				{\bf 
+					Anno Accademico 2022-2023 %correggere l'anno accademico
+				}
+			}
+		\end{center}
+\clearpage                       %crea un ambiente libero da vincoli
+                                        %   di margini e grandezza caratteri:
+                                        %   si pu\`o modificare quello che si
+                                        %   vuole, tanto fuori da questo
+                                        %   ambiente tutto viene ristabilito
+%
+\thispagestyle{empty}                   %elimina il numero della pagina
+\topmargin=6.5cm                        %imposta il margina superiore a 6.5cm
+\raggedleft                             %incolonna la scrittura a destra
+\large                                  %aumenta la grandezza del carattere
+                                        %   a 14pt
+\em                                     %emfatizza (corsivo) il carattere
+                   %\ldots lascia tre puntini
+\newpage                                %va in una pagina nuova
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage{\pagestyle{empty}\cleardoublepage}%non numera l'ultima pagina sinistra
+\end{titlepage}
+\pagenumbering{roman}                   %serve per mettere i numeri romani
+\chapter*{Introduzione}                 %crea l'introduzione (un capitolo
+                                        %   non numerato)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
+\rhead[\fancyplain{}{\bfseries
+INTRODUZIONE}]{\fancyplain{}{\bfseries\thepage}}
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries
+INTRODUZIONE}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%aggiunge la voce Introduzione
+                                        %   nell'indice
+\addcontentsline{toc}{chapter}{Introduzione}
+In matematica, pi\apo u precisamente in omologia e topologia algebrica, si utilizza il termine \textit{coomologia} per indicare un complesso di cocatene associato ad uno spazio topologico. In particolare in questa tesi si analizza la coomologia di variet\apo a differenziabili, che hanno come gruppi di coomologia degli $\mathbb{R}$-spazi vettoriali e come funzioni un particolare operatore detto \textit{operatore differenziale}. La coomologia di De Rham, che è quella che si andrà ad analizzare, è un recente strumento della topolodia algebrica che si è sviluppato in particolar modo nell'ultimo secolo e nasce con l'intento di cercare degli invarianti topologici per gli spazi topologici. L'invariante topologico più intuitivo che ci possa essere è il numero di componenti connesse di uno spazio e partendo proprio da questo semplice concetto si costruiscono in modo differente due sviluppi per i gruppi analoghi in dimensioni superiori. Il primo di questi conta il numero di componenti connesse per archi dello spazio dei loop, dando vita ai cosiddetti \textit{gruppi di omotopia}, mentre il secondo necessita di spiegazioni più dettagliate. Considerando una componente connessa come un sottoinsieme dello spazio X caratterizzato dalla proprietà che una funzione $C^{\infty}$ localmente costante è globalmente costante su di esso, si definisce $H^0(X)$ come l'$\mathbb{R}$-spazio vettoriale delle funzioni $C^{\infty}$ localmente costanti su X, di conseguenza dim$H^0(X)$ valuterà il numero di componenti connesse di X. Quindi, se $\pi_0(X)$ è l'insieme delle componenti connesse per archi di X, allora per spazi ragionevoli in cui le componenti connesse per archi e le componenti connesse coincidono $$\#\pi_0(X)=dimH^0(X)$$
+
+In questo tipo di spazi si ha quindi che la differenza tra i concetti di $\pi_0(X)$ e $H^0(X)$ si assottiglia, diventando sostanzialmente uno il punto di vista duale dell'altro. Se la definizione dei $\pi_k(X)$ con $k>0$ è semplice, poichè prendendo $p\in X$ si può denotare $\pi_0(X,p)$ l'oggetto nella categoria degli insiemi puntati dato da $\pi_0(X)$ con p come punto privilegiato, per poi definire $\pi_k(X)$ tramite $$\pi_{k+1}(X,p)=\pi_k(\Omega_pX,\bar{p})$$ con $\Omega_pX$ lo spazio dei loop di X centrato in p con funzione privilegiata la funzione $\bar{p}$ che vale costantemente p, invece la definizione degli $H^k(X)$ con $k>0$ non è altrettanto scontata, infatti non ne esiste unica ma tante con sottili differenze che su spazi ragionevoli si annullano. In particolare nelle varietà differenziabili tutte queste definizioni finiscono per coincidere in quella che viene detta \textit{Coomologia di De Rham}.
+
+La struttura della coomologia di De Rham di una varietà è ben comprensibile quando si prende come esempio un insieme aperto $U\subseteq\mathbb{R}^n$ con coordinate $x_1,\ldots,x_n$, infatti su di esso le funzioni $C^{\infty}$ che sono localmente costanti sono quelle il cui gradiente si annulla, ovvero $$df=\sum_{\substack{1<i<n}}\frac{\partial f}{\partial x_i} dx_i=0$$ quindi $H^0(X)$ corrisponde all'$\mathbb{R}$-spazio vettoriale delle soluzioni dell'equazione differenziale $df=0$.
+
+Una 1-forma differenziale generica si può scrivere come $\theta=\displaystyle\sum_{\substack{1<i<n}}a_idx_i$ con le $a_i$ che sono funzioni $C^{\infty}$, e può essere integrata lungo un qualsiasi cammino liscio $\gamma$, quindi si può pensare $\theta$ come una funzione $$\gamma\rightarrow\int\limits_{\gamma}\theta$$ che associa ad un cammino il suo integrale lungo quel cammino. A questo punto una 1-forma localmente costante rappresenta una funzione di questo tipo che rimane costante per piccole variazioni del cammino $\gamma$ che lasciano invariati gli estremi iniziale e finale, un integrale lineare di questo tipo per il teorema di Stokes è definito dalle equazioni differenziali $$\frac{\partial a_i}{\partial x_j}-\frac{\partial a_j}{\partial x_i}=0$$ ovvero $d\theta=0$. Il teorema fondamentale del calcolo integrale dice che $$\int\limits_{\gamma}df=f(Q)-f(P)$$ con Q e P estremi del cammino $\gamma$, quindi in sostanza ogni gradiente è banalmente localmente costante. Ora è evidente cosa si intende se $H^1(X)$ viene definitivo come l'$\mathbb{R}$-spazio vettoriale degli integrali lineari localmente costanti quozientato rispetto all'$\mathbb{R}$-spazio vettoriale degli integrali lineari banalmente localmente costanti. Per quanto riguarda gli $H^k(X)$ con $k>1$ essi sono definiti in maniera analoga integrando le k-forme differenziali tramite degli integrali k-dimensionali.
+\medskip
+
+Lo scopo di questa tesi è quello di è di illustrare i principali sviluppi della coomologia di De Rham, ovvero un potente strumento che consente di trovare invarianti per diffeomorfismi e invarianti topologici per le varietà studiate, passando attraverso importanti risultati quali la dualità di Poincarè e la classe di Thom.
+
+Per poter discutere di questi argomenti partendo da delle nozioni non troppo avanzate di omologia, topologia e geometria differenziale è necessario ottenere alcuni risultati intermedi che analizzeremo in seguito.
+
+In particolare nel capitolo I andremo a porre i presupposti per la discussione fornendo le definizioni principali necessarie ed analizzando il complesso di De Rham e la sequenza di Mayer-Vietoris, nel capitolo II proseguiremo con i lemmi di Poincarè, l'argomento di Mayer-Vietoris e la formula di Künneth, mentre nel capitolo III arriveremo al nocciolo di questa tesi discutendo di fibrati vettoriali, coomologia a supporto compatto lungo la componente verticale e classe di Thom, per poi concludere arrivando a definire la classe di Eulero.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\tableofcontents                        %crea l'indice
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
+\rhead[\fancyplain{}{\bfseries\leftmark}]{\fancyplain{}{\bfseries\thepage}}
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries
+INDICE}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\chapter{Il complesso di De Rham}                %crea il capitolo
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
+\pagenumbering{arabic}    
+Questo capitolo sarà dedicato alla definizioni delle nozioni basilari necessarie all'introduzione della coomologia di De Rham e della sequenza di Mayer-Vietoris.
+
+\section{Nozioni preliminari}
+\begin{def1}[Varietà differenziabile]
+    Siano $n\in\mathbb{N}$ e M una varietà di dimensione n, M si dice differenziabile se viene dotata di una struttura differenziabile, ovvero di un atlante $\{U_{\alpha}\}_{\alpha\in A}$ di cui ogni aperto $U_{\alpha}$ è omeomorfo ad $\mathbb{R}^n$ tramite l'omeomorfismo $\phi_{\alpha}:U_{\alpha}\rightarrow\mathbb{R}^n$, inoltre è richiesto che sulle intersezioni $U_{\alpha}\cap U_{\beta}$ le funzioni di transizione $g_{\alpha\beta}=\phi_{\alpha}\circ\phi_{\beta}^{-1}:\phi_{\beta}(U_{\alpha}\cap U_{\beta})\rightarrow\phi_{\alpha}(U_{\alpha}\cap U_{\beta})$ siano diffeomorfismi e che l'atlante sia minimale rispetto all'inclusione.
+\end{def1}
+La collezione degli $\{U_{\alpha},\phi_{\alpha}\}_{\alpha\in A}$ si dice \textit{ricoprimento aperto coordinato} di M e $\phi_{\alpha}$ si dice \textit{banalizzazione} di $U_{\alpha}$.
+
+Inoltre si assume che ogni varietà di cui si parlerà sia Hausdorff e abbia una base al più numerabile.
+
+Se $u_1,\ldots,u_n$ è un sistema di coordinate di $\mathbb{R}^n$, allora si  dice che $\phi_{\alpha}=(x_1,\ldots,x_n)$ con $x_i=u_i\circ\phi_{\alpha}$ $\forall i\in{1,\ldots,n}$ è un sistema di coordinate per $U_{\alpha}$.
+
+Analogamente una funzione $f$ su $U_{\alpha}$ si dice \textit{differenziabile} su $U_{\alpha}$ se $f\circ\phi_{\alpha}^{-1}$ è differenziabile su $\mathbb{R}^n$ e se $f$ è una funzione differenziabile su $U_{\alpha}$ la sua i-esima derivata parziale su $U_{\alpha}$ $\frac{\partial f}{\partial x_i}$ si definisce come la i-esima derivata parziale della funzione $f\circ\phi_{\alpha}^{-1}$ su $\mathbb{R}^n$,ovvero $$\frac{\partial f}{\partial x_i}(p)=\frac{\partial (f\circ\phi_{\alpha}^{-1})}{\partial u_i}(\phi_{\alpha}(p))$$ con $p\in M$.
+
+Lo spazio tangente $T_pM$ a $M$ nel punto $p\in M$ è l'$\mathbb{R}$-spazio vettoriale generato dagli operatori $\frac{\partial}{\partial x_1}(p),\ldots,\frac{\partial}{\partial x_n}(p)$ e un campo vettoriale liscio su $U_{alpha}$ è una combinazione lineare $X_{alpha}=\sum f_i\frac{\partial}{\partial x_i}$ con $f_i$ funzioni lisce su $U_{\alpha}$.
+
+Un campo vettoriale $X$ $C^{\infty}$ su $M$ può essere visto come una collezione di campi $X_{\alpha}$ su $U_{\alpha}$ che coincidono sulle intersezioni $U_{\alpha}\cap U_{beta}$.
+\begin{def1}[Partizione dell'unità]
+    Sia $M$ una varietà differenziabile, si dice partizione dell'unità di $M$ una collezione di funzioni $C^\infty$ non negative $\{p_{\alpha}\}_{\alpha\in I}$ tali che:
+    \begin{enumerate}
+        \item [1.]Ogni punto $p\in M$ ha un intorno in cui solo un numero finto di $p_{\alpha}$ assume un valore non nullo.
+        \item [2.]$\displaystyle\sum_{\alpha\in I}p_{\alpha}=1$.
+    \end{enumerate}
+\end{def1}
+Sono stati dimostrati due grandi risultati riguardanti le partizioni dell'unità di varietà differenziabili.
+\begin{prop1}
+    Sia $M$ una varietà differenziabile e $\{U_{\alpha}\}_{\alpha\in I}$ un suo ricoprimento aperto, allora esite una partizione dell'unità di $M$ $\{p_{\alpha}\}_{\alpha\in I}$ tale che $\forall\alpha\in I$ il supporto di $p_{\alpha}$ è contenuto in $U_{\alpha}$.
+\end{prop1}
+
+Una partizione dell'unità di questo tipo viene detta \textit{subordinata al ricoprimento aperto $\{U_{\alpha}\}_{\alpha\in I}$}.
+\begin{prop1}
+    Sia $M$ una varietà differenziabile e $\{U_{\alpha}\}_{\alpha\in I}$ un suo ricoprimento aperto, allora esite una partizione dell'unità di $M$ $\{p_{\alpha}\}_{\alpha\in J}$ tale che $\forall\alpha\in J$ il supporto di $p_{\alpha}$ è compatto.
+\end{prop1}
+
+In generale non si può richiedere ad una partizione dell'unità di una varietà sia di essere a supporto compatto che subordinata ad un certo ricoprimento aperto.
+
+\begin{def1}[Mappa propria]
+    Una mappa si dice propria se la preimmagine di ogni insieme compatto è compatta.
+\end{def1}
+
+Considerando $x_1,\ldots,x_n$ le coordinate standard e $f$ una funzione su $\mathbb{R}^n$, si indica l'integrale di $f$ su $\mathbb{R}^n$ con la scrittura $\int\limits_{\mathbb{R}^n}f|dx_1,\ldots,dx_n|$, mentre si indica con $\int\limits_{\mathbb{R}^n}fdx_1,\ldots,dx_n$ l'integrale su $\mathbb{R}^n$ dell'n-forma differenziale a supporto compatto $\omega=fdx_1,\ldots,dx_n$. Questa scelta di notazione è dovuta alla volontà di ricordare che l'integrale di una funzione non dipende dall'ordine di $dx_1,\ldots,dx_n$, mentre l'integrale di una forma sì, ovvero se $\pi$ è una permutazione di $\{1,\ldots,n\}$ allora $$\int\limits_{\mathbb{R}^n}f|dx_{\pi(1)},\ldots,dx_{\pi(n)}|=\int\limits_{\mathbb{R}^n}f|dx_1,\ldots,dx_n|$$ e $$\int\limits_{\mathbb{R}^n}fdx_{\pi(1)},\ldots,dx_{\pi(n)}=(sgn\pi)\int\limits_{\mathbb{R}^n}fdx_1,\ldots,dx_n$$
+
+Si può notare come l'integrale di una forma possa dipendere dalla scelta delle coordinate, infatti se $T$ è un cambiamento di variabili su $\mathbb{R}^n$, che può essere visto come un diffeomorfismo $T:\mathbb{R}^n\rightarrow\mathbb{R}^n$, ed $\omega$ è una forma differenziale su $\mathbb{R}^n$ si ha che $$\int\limits_{\mathbb{R}^n}\omega\circ T=sgn(J(T))\int\limits_{\mathbb{R}^n}\omega$$ con $J(T)$ lo jacobiano di $T$.
+
+Se $sgn(J(T))=1$ si dice che \textit{$T$ preserva l'orientazione}.
+
+\begin{def1}[Atlante orientato]
+    Sia M una varietà differenziabile con atlante $\{U_{\alpha};\phi_{\alpha}\}_{\alpha\in I}$,
+    $\{U_{\alpha};\phi_{\alpha}\}_{\alpha\in I}$  si dice orientato se tutte le sue funzioni di transizione $g_{\alpha\beta}$ preservano l'orientazione.
+\end{def1}
+Una varietà si dice \textit{orientabile} se ha un atlante orientato e si dimostra che una varietà $M$ di dimensione $n$ è orientabile se e solo se ha una n-forma globale $C^{\infty}$ che non si annulla in nessun punto.
+
+Si consideri ora una varietà differenziale $M$ orientabile di dimensione $n$, se $\omega$ e $\omega'$ sono due forme differenziali globali su $M$ che non si annullano allora differiscono per una funzione $f$ che non si annulla tale che $\omega=f\omega'$, inoltre se $M$ è connessa $f$ deve essere o sempre negativa o sempre positiva, nel caso in cui sia sempre positiva $\omega$ e $\omega'$ si dicono \textit{equivalenti}.
+
+In questo modo si dividono tutte le n-forme su una varietà connessa orientabile $M$ che non si annullano in due classi di equivalenza, ognuna di queste classi $[M]$ si dice \textit{orientazione} di $M$. L'orientazione standard su $\mathbb{R}^n$ è data dalla classe di equivalenza di $dx_1,\ldots,dx_n$.
+
+\begin{def1}[Integrale di una forma su una varietà orientabile]
+    Siano $n$ un intero e $M$ una varietà orientabile di dimensione $n$ con atlante $\{U_{\alpha};\phi_{\alpha}\}_{\alpha\in I}$, siano $[M]$ l'orientazione di $M$ scelta e $\{p_{\alpha}\}_{\alpha\in I}$ una partizione dell'unità subordinata a $\{U_{\alpha};\phi_{\alpha}\}_{\alpha\in I}$, sia $\omega$ una n-forma differenziale su $M$, si definisce integrale di $\omega$ su $M$ secondo l'orientazione $[M]$ il valore $$\int\limits_{[M]}\omega=\sum_{\alpha\in I}\int\limits_{U_{\alpha}}p_{\alpha}\omega$$ dove $\int\limits_{U_{\alpha}}p_{\alpha}\omega$ indica l'integrale $\int\limits_{\mathbb{R}^n}(p_{\alpha}\omega)\circ\phi_{\alpha}^{-1}$.
+\end{def1}
+
+Il cambiare orientazione si rispecchia nel cambiare di segno il valore ottenuto.
+
+Si dimostra facilmente che il valore dell'integrale non dipende nè dall'atlante nè dalla partizione dell'unità scelti.
+
+\begin{def1}[Varietà con bordo]
+    Una varietà $M$ di dimensione $n$ con atlante $\{U_{\alpha};\phi_{\alpha}\}_{\alpha\in I}$ si dice con bordo se $\forall\alpha\in I$ $U_{\alpha}$ è omeomorfo a $\mathbb{R}^n$ o al semispazio superiore $H^n=\big\{(x_1,\ldots,x_n)|x_n\geq0\big\}$.
+\end{def1}
+
+Il bordo $\delta M$ di una varietà con bordo $M$ di dimensione $n$ è una varietà di dimensione $n-1$ sulla quale un atlante orientato di $M$ induce un atlante orientato in modo naturale.
+
+\begin{lem1}
+    Sia $T:H^n\rightarrow H^n$ un diffeomorfismo del semispazio superiore in sè con jacobiano sempre positivo, allora $T$ induce dal bordo in sè un diffeomorfismo $\bar{T}$ con jacobiano sempre positivo.
+\end{lem1}
+
+Conferendo ad $H^n$ l'orientazione standard $dx_1,\ldots,dx_n$ di $\mathbb{R}^n$, si definisce \textit{orientazione indotta} sul suo bordo $\partial H^n$ la classe di equivalenza di $(-1)^ndx_1,\ldots,dx_{n-1}$. In generale se $M$ è una varietà orientata con bordo di dimensione $n$, $U\subseteq M$ aperto e $\phi$ un diffeomorfismo che preserva l'orientazione da $U$ in $H^n$, si definisce \textit{orientazione indotta} $[\partial M]$ su $\partial M$ la classe $[\partial H^n]\circ\phi=[\partial M]|_{\partial U}$, con $\partial U=(\partial M)\cap U$.
+
+\begin{teo1}[Teorema di Stokes]
+    Siano $n$ intero e $M$ varietà orientata di dimensione $n$, sia $\partial M$ il bordo di $M$ dotato dell'orientazione indotta, sia $\omega$ una (n-1)-forma differenziale su $M$ con supporto compatto, allora $$\int\limits_Md\omega=\int\limits_{\partial M}\omega$$
+\end{teo1}
+
+\begin{def1}[Fibrato]
+    Sia $G$ un gruppo topologico che agisce in modo effettivo su uno spazio vettoriale $F$ a sinistra e sia $\pi:E\rightarrow M$ una suriezione tra spazi topologici, $\pi$ si dice fibrato con fibra $F$ e gruppo di struttura $G$ se $M$ ha un ricoprimento aperto $\{U_{\alpha}\}_{\alpha\in I}$ con omeomorfismi $\forall\alpha\in I$, $\phi_{\alpha}:E|_{\pi^{-1}(U_{\alpha})}\rightarrow U_{\alpha}\times F$ e le funzioni di transizione sono funzioni contninue $g_{\alpha\beta}(x)=\phi_{\alpha}\phi_{\beta}^{-1}|_{\{x\}\times F}$ a valori in $G$.
+\end{def1}
+Spesso si parla di un fibrato senza specificarne il gruppo di struttura $G$, in quel caso si sottintende che esso sia il gruppo dei diffeomorfismi di $F$. Inoltre spesso ci si riferisce ad $E$ come al fibrato stesso e si scrive $E|_{U_{\alpha}}$ invece di $E|_{\pi^{-1}(U_{\alpha})}$.
+
+\section{Il complesso di De Rham}
+Come prima cosa è necessario introdurre l'algebra che utilizzeremo per definire le forme differenziali, ovvero l'algebra su $\mathbb{R}$ generata da $dx_1,\ldots,dx_n$:
+\begin{def1}[Algebra $\Omega^*$ su $\mathbb{R}$]
+Sia M una varietà differenziabile su $\mathbb{R}^n$ e siano $x_1,\ldots,x_n$ delle cordinate su $\mathbb{R}^n$, si definisce $\Omega^*$ l'algebra su $\mathbb{R}$ generata da $dx_1,\ldots,dx_n$ con le relazioni
+$$\begin{cases}
+    (dx_i)^2=0       & \quad \forall i \in \{1,\ldots,n\}\\
+    dx_idx_j=-dx_jdx_i  & \quad \forall i,j \in \{1,\ldots,n\}, i\neq j
+\end{cases}$$
+\end{def1}
+
+$\Omega^*$ è anche uno spazio vettoriale su $\mathbb{R}^n$ che ha come base $$1, dx_i, dx_idx_j, \ldots,dx_1\ldots dx_n \quad \text{con} \quad i<j$$
+
+A questo punto è chiara la definizione di forma differenziale $C^{\infty}$ su $\mathbb{R}^n$
+\begin{def1}[Forma differenziale $C^{\infty}$ su $\mathbb{R}^n$]
+Sia n un intero, si definisce forma differenziale $C^{\infty}$ su $\mathbb{R}^n$ un elemento di $$\Omega^*(\mathbb{R}^n)=\{Funzioni \quad C^{\infty} \quad su \quad \mathbb{R}^n\} \otimes \Omega^*$$
+\end{def1}
+
+In questo modo una generica forma differenziale $C^{\infty}$ su $\mathbb{R}^n$ si può scrivere come $$\omega=\sum f_{i_1,\ldots,i_q}dx_{i_1}\ldots dx_{i_q}=\sum f_Idx_I$$
+$\Omega^*(\mathbb{R}^n)$ si scompone in modo naturale in $\Omega^*(\mathbb{R}^n)=\oplus_{q=O}^n\Omega^q(\mathbb{R}^n)$ con $\Omega^q(\mathbb{R}^n)$ l'$\mathbb{R}$-spazio vettoriale delle q-forme differenziali su $\mathbb{R}^n$. Per rendere la catena dei $\Omega^*(\mathbb{R}^n)$ un complesso differenziale è necessario un operatore differenziale $d:\Omega^q(\mathbb{R}^n)\rightarrow\Omega^{q-1}(\mathbb{R}^n)$ definito per linearità da:
+$$d\omega=
+\begin{cases}
+    \sum \frac{\partial\omega}{\partial x_i}dx_i & se \quad \omega \in \Omega^0(\mathbb{R}^n)\\
+    \sum df_Idx_I & se \quad \omega=\sum f_Idx_I
+\end{cases}$$
+Questo operatore viene detto \textit{differenziazione esterna} e ha due principali proprietà, ovvero l'essere un'antiderivazione e il fatto che $d^2=0$, che rende effettivamente $\Omega^*(\mathbb{R}^n)$ un complesso differenziale.
+\begin{prop1}
+    d è un'antiderivazione, ovvero se $\tau,\omega \in \Omega^*(\mathbb{R}^n)$ allora 
+    \begin{equation}
+        d(\tau\cdot\omega)=d(\tau)\cdot\omega+(-1)^{deg\tau}\tau\cdot d(\omega)
+    \end{equation}
+    \begin{proof}
+    Per linearità basta mostrarlo nel caso $\tau=f_Idx_I$ e $\omega=g_Jdx_J$:
+    \begin{align*}
+        d(\tau\cdot\omega)&=d(f_Ig_Jdx_Idx_J)=d(f_Ig_J)dx_Idx_J=(df_I)g_Jdx_Idx_J+f_I(dg_J)dx_Idx_J\\
+        &=d(\tau)\cdot\omega(-1)^{deg\tau}\tau\cdot d(\omega)
+    \end{align*}
+    \end{proof}
+\end{prop1}
+\begin{prop1}
+    $d^2=0$
+    \begin{proof}
+        Per linearità di $d$ è sufficiente provarlo sui monomi del tipo $\omega=f_Idx_I$ e poichè $d^2\omega=d(d(f_Idx_I))=d(df_Idx_I)$ è sufficiente provarlo per le funzioni $f \in \Omega^0(\mathbb{R}^n))$.
+        Si ha che $$d^2\omega=d\bigg(\sum_{\substack{1<i<n}}\frac{\partial\omega}{\partial x_i}dx_i\bigg)=\sum_{\substack{1<i,j<n}}\frac{\partial^2f}{\partial x_j\partial x_i}dx_jdx_i$$
+        i termini $\frac{\partial^2f}{\partial x_j\partial x_i}$ e $\partial x_j\partial x_i$ sono rispettivamente simmetrici e antisimmetrici in $i,j$, quindi la loro somma si elide nella sommatoria ottenendo $d^2\omega=0$.
+    \end{proof}
+\end{prop1}
+
+$\Omega^*(\mathbb{R}^n)$ con l'operatore di differenziazione esterna prende il nome di \textit{Complesso di De Rham} di $\mathbb{R}^n$, un elemento dell'immagine di $d$ viene detto \textit{forma esatta} mentre un elemento del nucleo di $d$ si dice \textit{forma chiusa}.
+
+Poichè $d^2=0$ le forme esatte sono anche chiuse e di conseguenza si può definire la coomologia nel seguente modo:
+\begin{def1}[Coomologia di De Rham di $\mathbb{R}^n$]
+    Siano n e q interi, si definisce q-esima coomologia di De Rham di $\mathbb{R}^n$ l'$\mathbb{R}$-spazio vettoriale $$H_{DR}^q(\mathbb{R}^n)=H^q(\mathbb{R}^n)=\frac{\{\text{q-forme chiuse}\}}{\{\text{q-forme esatte}\}}$$
+\end{def1}
+
+Se si considerano le forme chiuse come soluzioni dell'equazione differenziale $d\omega=0$ e le forme esatte come le sue soluzioni banali allora $H^*(\mathbb{R}^n)$ offre una stima sulla grandezza dello spazio delle soluzioni non banali.
+
+Ogni cosa descritta fino ad ora su $\mathbb{R}^n$ può essere analogamente definita su ogni aperto $U \subseteq\mathbb{R}^n$.
+\begin{ese1}[Coomologia di un punto (n=0)]
+Parlare di funzioni localmente costanti su un punto è ovviamente inappropriato dal momento che ogni funzione su di esso può essere considerata tale, quindi ogni funzione $f\in \Omega^0(\mathbb{R}^0)$ è chiusa mentre solo la funzione identicamente nulla è esatta, dunque su un punto si ha che $H^0(\mathbb{R}^0)\simeq\mathbb{R}$, mentre non esistono q-forme definite su un punto oltre a quella nulla $\forall q>0$, quindi banalmente $H^q(\mathbb{R}^0)=0$ $\forall q>0$.
+
+Riassumendo:
+$$H^q(\mathbb{R}^0)=
+\begin{cases}
+    \mathbb{R} & se \quad q=0\\
+    0 & se \quad q>0
+\end{cases}$$
+\end{ese1}
+\begin{ese1}[Coomologia di $\mathbb{R}$ (n=1)]
+Dal momento che $\mathbb{R}$ è composto da una sola componente connessa le funzioni localmente costanti su $\mathbb{R}$ sono anche globalmente costanti, dunque $H^0(\mathbb{R})\simeq\mathbb{R}$, inoltre per quanto riguarda le 1-forme, esse sono tutte nel nucleo di $d$, quindi la domanda da porsi è: quali 1-forme possono essere scritte come $df$ con $f\in\Omega^0(\mathbb{R})$? Tutte, dal momento che $\forall\omega\in\Omega^1(\mathbb{R})$ con $\omega=g(x)dx$, se poniamo $f=\int\limits_0^xg(u)du$ otteniamo che $df=\omega$, quindi ogni 1-forma su $\mathbb{R}$ è esatta, ovvero $H^1(\mathbb{R})=0$.
+
+Riassumendo:
+$$H^q(\mathbb{R})=
+\begin{cases}
+    \mathbb{R} & se \quad q=0\\
+    0 & se \quad q>0
+\end{cases}$$
+\end{ese1}
+In generale si otterrà che $\forall n\in\mathbb{N}$
+$$H^q(\mathbb{R}^n)=
+\begin{cases}
+    \mathbb{R} & se \quad q=0\\
+    0 & se \quad q>0
+\end{cases}$$
+\subsection{Il complesso di De Rham a supporto compatto}
+Una variante della coomologia di De Rham di una varietà è la sua coomologia a supporto compatto, che mantiene le stesse definizioni della precedente ad eccezione del fatto che si analizzano solo le funzioni $C^{\infty}$ con un supporto compatto, andando ad analizzare quindi caratteristiche locali e non più globali della varietà. Ricordiamo che il supporto di una funzione è definito come la chiusura dell'insieme dei valori del dominio che vengono associati dalla funzione ad elementi non nulli. Il complesso delle forme a supporto compatto di uno spazio X si indica $\Omega_c^*(X)$ e analogamente la sua coomologia $H_c^*(X)$.
+
+Nel caso in cui lo spazio che si sta analizzando è già di per sè compatto, allora banalmente i suoi complessi delle forme e delle forme a supporto compatto finiranno per coincidere, ed allo stesso modo anche le relative coomologie.
+
+\begin{ese1}[Coomologia a supporto compatto di un punto (n=0)]
+La coomologia a supporto compatto di un punto, essendo un punto un inseme compatto, è identica alla sua coomologia, dunque
+$$H_c^q(\mathbb{R}^0)=
+\begin{cases}
+    \mathbb{R} & se \quad q=0\\
+    0 & se \quad q>0
+\end{cases}$$
+\end{ese1}
+\begin{ese1}[Coomologia a supporto compatto di $\mathbb{R}$ (n=1)]
+Le funzioni su $\mathbb{R}$ localmente costanti sono globalmente costanti, ma di queste, eccetto la funzione identicamente nulla, nessuna è a supporto compatto, dunque $H_c^0(\mathbb{R})=0$. Ora, come già detto, le 1-forme su $\mathbb{R}$ sono tutte chiuse, ma quali di queste possono essere scritte come $df$ con $f\in\Omega_c^0(\mathbb{R})$?
+Per cercare di rispondere a questa domanda definiamo la mappa di integrazione $$\int\limits_{\mathbb{R}}:\Omega_c^1(\mathbb{R})\rightarrow\mathbb{R}$$ che è chiaramente suriettiva. Questa mappa è lineare e si annulla sulle forme esatte a supporto compatto, poichè se f è esatta e ha supporto contenuto nell'intervallo [a;b], allora $\int\limits_{\mathbb{R}}df=\int\limits_a^bdf=f(b)-f(a)=0$, quindi $$\{\text{1-forme esatte}\}\subseteq ker\int\limits_{\mathbb{R}}$$
+Inoltre se $\omega\in ker\int\limits_{\mathbb{R}}$ e $\omega=g(x)dx$, allora la funzione $f(x)=\int\limits_{-\infty}^xg(u)du$ ha supporto compatto e $df=\omega$, quindi $\omega$ è anche una forma esatta, ciò significa per la doppia inclusione che $$\{\text{1-forme esatte}\}=ker\int\limits_{\mathbb{R}}$$
+Dunque, per il teorema degli isomorfismi applicato alla mappa di integrazione si ha che $$H_c^1(\mathbb{R})=\frac{\Omega_c^1(\mathbb{R})}{\{\text{1-forme esatte}\}}=\frac{\Omega_c^1(\mathbb{R})}{ker\int\limits_{\mathbb{R}}}\simeq\mathbb{R}$$
+Quindi riassumendo:
+$$H_c^q(\mathbb{R})=
+\begin{cases}
+    0 & se \quad q\neq1\\
+    \mathbb{R} & se \quad q=1
+\end{cases}$$
+\end{ese1}
+In generale si otterrà che $\forall n\in\mathbb{N}$
+$$H_c^q(\mathbb{R}^n)=
+\begin{cases}
+    0 & se \quad q\neq n\\
+    \mathbb{R} & se \quad q=n
+\end{cases}$$
+\section{La sequenza di Mayer-Vietoris}
+Il complesso di De Rham può essere visto anche sotto un aspetto funtoriale, più precisamente $\Omega^*$ è un funtore controvariante dalla categoria degli spazi euclidei $\{\mathbb{R}^n\}_{n\in\mathbb{N}}$ con le mappe $C^{\infty}$ alla categoria delle algebre differenziali graduate commutative con i loro omomorfismi. Qui la commutatività delle algebre indica il fatto che $\tau\omega=(-1)^{deg\tau deg\omega}\omega\tau$.
+
+Però per poter dire che $\Omega^*$è un funtore è necessario che agisca anche sulle funzioni, infatti si definisce la cosiddetta \textit{mappa di pullback}:
+\begin{def1}[Mappa di pullback]
+    Siano $n,m\in\mathbb{N}$ e sia $f:\mathbb{R}^n\rightarrow\mathbb{R}^m$ una mappa $C^{\infty}$, allora si dice mappa di pullback di $f$ la funzione $f^*:\Omega^0(\mathbb{R}^m)\rightarrow\Omega^0(\mathbb{R}^n)$ definita da $$f^*(g)=g\circ f$$
+\end{def1}
+
+La mappa di pullback di una certa funzione f può essere estesa anche alle forme differenziali ed è possibile farlo in modo che commuti con l'operatore $d$, quindi considerando $y_1,\ldots,y_n$ le coordinate di $\mathbb{R}^n$ si pone $$f^*\Big(\sum g_Idy_{i_1}\ldots dy_{i_q}\Big)=\sum (g_I\circ f)df_{i_1}\ldots df_{i_q}$$ dove $f_i=y_i\circ f$ è la i-esima componente della funzione $f$. Mostriamo che con questa definizione $f^*$ commuta effettivamente con $d$, ovvero che $f^*$ è una chain map per il complesso $\Omega^*(\mathbb{R}^n)$.
+\begin{prop1}
+    $f^*\circ d=d\circ f^*$
+    \begin{proof}
+        Per linearità basta mostrarlo sui monomi, quindi preso $\omega\in\Omega^*(\mathbb{R}^q)$ con $\omega=g_Idy_{i_1}\ldots dy_{i_q}$
+        \begin{align*}
+        d(f^*(\omega))&=d(f^*(g_Idy_{i_1}\ldots dy_{i_q}))=d((g_I\circ f)df_{i_1}\ldots df_{i_q})=d(g_I\circ f)df_{i_1}\ldots df_{i_q}\\
+        f^*(d(\omega))&=f^*(d(g_Idy_{i_1}\ldots dy_{i_q}))=f^*\Big(\Big(\sum_{1<i<n}\frac{\partial g_I}{\partial y_i}dy_i\Big)dy_{i_1}\ldots dy_{i_q}\Big)\\
+        &=\Big(\Big(\sum_{1<i<n}\frac{\partial g_I}{\partial y_i}\circ f\Big)df_i\Big)df_{i_1}\ldots df_{i_q}=d(g_I\circ f)df_{i_1}\ldots df_{i_q}
+    \end{align*}
+    \end{proof}
+\end{prop1}
+
+Il funtore $\Omega^*$ può essere esteso alla categoria delle varietà differenziabili senza ulteriori complicanze, infatti se $f:M\rightarrow N$ è una mappa tra varitetà differenziabili, allora essa induce un morfismo $f^*:\Omega^*(N)\rightarrow\Omega^*(M)$, che agisce in modo analogo a come agisce su $\mathbb{R}^n$.
+
+Considerando ora una varietà $M$ e un suo ricoprimento aperto dato da due soli insiemi $\{U,V\}$, si ha una sequenza di ovvie inclusioni
+\begin{center}
+\begin{tikzcd}
+    U\cap V \arrow[r, hook, shift left, "\delta_0"] 
+    \arrow[r, hook, shift right, "\delta_1" ']
+    &U\coprod V \arrow[r, hook, "i"]
+    &M
+\end{tikzcd}    
+\end{center}
+che danno vita tramite $\Omega^*$ ad una sequenza di restrizioni di forme
+\begin{center}
+\begin{tikzcd}
+    \Omega^*(M) \arrow[r, "i^*"]
+    &\Omega^*(U)\oplus \Omega^*(V) \arrow[r, shift left, "\Omega^*(\delta_0)"]
+    \arrow[r, shift right, "\Omega^*(\delta_1)" ']
+    &\Omega^*(U\cap V)
+\end{tikzcd}    
+\end{center}
+
+Se in questa sequenza nel passaggio da $\Omega^*(U)\coprod \Omega^*(V)$ a $\Omega^*(U\cap V)$ si considera la differenza tra $\Omega^*(\delta_0)$ e $\Omega^*(\delta_1)$ si ottiene quella che si chiama sequenza di Mayer-Vietoris:
+\begin{center}
+\begin{tikzcd}
+    0 \arrow[r]
+    &\Omega^*(M) \arrow[r, "i^*"]
+    &\Omega^*(U)\oplus \Omega^*(V) \arrow[r, "\delta"]
+    &\Omega^*(U\cap V) \arrow[r]
+    &0
+\end{tikzcd}    
+\end{center}
+con $\delta\big((\omega,\tau)\big)=\tau-\omega$.
+
+La sequenza di Mayer-Vietoris è uno strumento di calcolo molto potente dal momento che essendo una sequenza esatta corta induce una sequenza lunga esatta in coomologia del tipo
+\begin{center}
+\begin{tikzcd}
+    [cells={nodes={text height=2ex,text depth=0.75ex}}]
+    H^{k+1}(M) \arrow[r, "i^{*}"] & H^{k+1}(U) \oplus H^{k+1}(V) \arrow[r] & \cdots \\
+    H^{k}(M) \arrow[r, "i^{*}"] & H^{k}(U) \oplus H^{k}(V) \arrow[r, "\delta"] \arrow[draw=none]{u}[name=Y, shape=coordinate]{} \arrow[draw=none]{d}[name=Z,shape=coordinate]{} & H^{k}(U \cap V) \arrow[curarrow=Y]{ull}{} \\
+    \cdots \arrow[r] & H^{k-1}(U) \oplus H^{k-1}(V) \arrow[r, "\delta"] & H^{k-1}(U \cap V) \arrow[curarrow=Z]{ull}{}
+\end{tikzcd}
+\end{center}
+che permette di calcolare facilmente la coomologia di certe varietà che prendendone dei ricoprimenti adeguati.
+\begin{prop1}
+    La sequenza di Mayer-Vietoris è esatta.
+    \begin{proof}
+        L'esattezza della sequenza è ovvia eccetto nel punto $\Omega^*(U\cap V)$. Poichè ovviamente $ker(\Omega^*(U\cap V)\rightarrow0)=\Omega^*(U\cap V)$ bisogna solo calcolare $Im\delta$.
+        \begin{oss1}
+            Se $\omega\in\Omega^*(U\cap V)$ non si può semplicemente prendere la coppia $(\omega,0)\in\Omega^*(U)\oplus\Omega^*(V)$ poichè se $\omega$ non è nulla nella frontiera di $U\cap V$ la sua estensione per 0 su $U$, oppure analogamente su $V$, rischierebbe di perdere la continuità.
+        \end{oss1}
+        Per evitare inconvenienti di questo tipo, considerando $\omega\in\Omega^*(U\cap V)$, è sufficiente prendere $\{p_U;p_V\}$ partizione dell'unità subordinata al ricoprimento aperto $\{U;V\}$ e definire le forme $p_U\omega$ su $V$ e $-p_V\omega$ su $U$. $p_U\omega$ e $-p_V\omega$ sono forme rispettivamente in $\Omega^*(V)$ e $\Omega^*(U)$, inoltre per definizione di partizione dell'unità $$p_U\omega-(-p_V\omega)=\omega$$ quindi $\delta\big((-p_V\omega,p_U\omega)\big)=\omega$, dunque $Im\delta=\Omega^*(U\cap V)$.
+    \end{proof}
+\end{prop1}
+
+Nella sequenza lunga indotta in coomologia le funzioni $i^*$ e $\delta$ sono ovviamente definite come le analoghe funzioni nella sequenza corta, mentre ad avere una natura differente è l'operatore $d^*$, la sua definizione è formulata nel seguente modo:
+\begin{center}
+\begin{tikzcd}
+    &\ldots & \ldots & \ldots \\
+    0 \arrow[r]
+    &\Omega^{q+1}(M) \arrow[r, "i^*"] \arrow[u]
+    &\Omega^{q+1}(U)\oplus \Omega^{q+1}(V) \arrow[r, "\delta"] \arrow[u]
+    &\Omega^{q+1}(U\cap V) \arrow[r] \arrow[u]
+    &0 \\
+    0 \arrow[r]
+    &\Omega^q(M) \arrow[r, "i^*"] \arrow[u, "d"]
+    &\Omega^q(U)\oplus \Omega^q(V) \arrow[r, "\delta"] \arrow[u, "d"]
+    &\Omega^q(U\cap V) \arrow[r] \arrow[u, "d"]
+    &0 \\
+    &\ldots \arrow[u]
+    &\ldots \arrow[u]
+    &\ldots \arrow[u]
+\end{tikzcd}    
+\end{center}
+si consideri $\omega\in H^q(U\cap V)$, quindi $\omega\in\Omega^q(U\cap V)$, tale che $d\omega=0$, per l'esattezza delle righe del diagramma $\exists\xi\in\Omega^q(U)\oplus \Omega^q(V)$ tale che $\delta\xi=\omega$. Un elemento di questo tipo non è unico ma possiamo scriverlo come $\xi=(-p_V\omega,p_U\omega)$, così che applicando $d$ si ottiene $d\xi=\big(-d(p_V\omega),d(p_U\omega)\big)$, inoltre per la commutatività del diagramma si ha che $\delta(d\xi)=d(\delta\xi)=d\omega=0$, ovvero $d\xi\in ker\delta$. Questo implica che $-d(p_V\omega)$ e $d(p_U\omega)$ devono coincidere su $U\cap V$ e quindi, sempre per l'esattezza delle righe, che esiste un unico elemento in $\Omega^{q+1}(M)$ la cui immagine tramite $i^*$ è $d\xi$. Denotando questo elemento $d^*(\omega)=\omega'$ è facile notare che è una forma chiusa, infatti $i^*(d(\omega'))=d(i^*(\omega'))=d(d\xi)=0$, questo significa che $d(\omega'\in keri^*)$ ma essendo $i^*$ iniettiva per esattezza della riga $d(\omega')=0$, quindi $\omega'$ è una forma chiusa.
+Si può dimostrare che la definizione appena data non dipende dalle scelte fatte, ovvero la scelta di $\omega$ invece che di un elemento della sua stessa classe in coomologia e la scelta di $\xi$ come preimmagine di $\omega$, dunque ora ci sono tutti i requisiti per esplicitare:
+\begin{equation}
+    d^*\big([\omega]\big)=
+    \begin{cases}
+        \big[-d(p_V\omega)\big] & su \quad U \\
+        \big[d(p_U\omega)\big] & su \quad V
+    \end{cases}
+\end{equation}
+\begin{def1}[Supporto di una forma differenziale]
+    Sia $M$ una varietà differenziabile e $\omega$ una forma differenziale su $M$, si dice supporto di $\omega$ il più piccolo insieme chiuso $Z\subset M$ tale che $\omega=0$ su $M\setminus Z$.
+\end{def1}
+\begin{oss1}
+    Nella sequenza lunga di Mayer-Vietoris $d^*\big([\omega]\big)\in\Omega^*(M)$ ha in realtà supporto in $U\cap V$ per via della sua definizione.
+\end{oss1}
+\begin{ese1}[Coomologia di $S^1$]
+Il più classico esempio di applicazione della sequenza di Mayer-Vietoris in coomologia è la sua applicazione per calcolare la coomologia di $S^1$. Come prima cosa si ricopre $S^1$ con due aperti $U$ e $V$ come in figura, dotandolo anche di una partizione dell'unità subordinata a $\{U;V\}$.
+\begin{figure}
+    \centering
+    \includegraphics[width=11cm]{immagine_tesi.png}
+        \caption{Partizione dell'unità di $S^1$}
+        \label{fig:enter-label}
+\end{figure}
+
+\begin{center}
+\begin{tikzcd}
+    [cells={nodes={text height=2ex,text depth=0.75ex}}]
+    H^*(S^1) & H^*(U)\oplus H^*(V) & H^*(U\cap V) \\
+    0 \arrow[r, "i^{*}"] & 0 \arrow[r] & \cdots \\
+    H^{1}(S^1) \arrow[r, "i^{*}"] & 0 \arrow[r, "\delta"] \arrow[draw=none]{u}[name=Y, shape=coordinate]{} \arrow[draw=none]{d}[name=Z,shape=coordinate]{} & 0 \arrow[curarrow=Y]{ull}{} \\
+    H^0(S^1) \arrow[r, "i^*"] & \mathbb{R}\oplus\mathbb{R} \arrow[r, "\delta"] & \mathbb{R}\oplus\mathbb{R} \arrow[curarrow=Z]{ull}{}
+\end{tikzcd}
+\end{center}
+Dal momento che se $(\omega,\tau)\in H^1(U)\oplus H^1(V)$ allora $\delta\big((\omega,\tau)\big)=(\tau-\omega,\tau-\omega)$, l'immagine di $\delta$ ha dimensione 1 e di conseguenza anche il suo nucleo, ma il suo nucleo corrisponde all'immagine della funzione $i^*$, che essendo iniettiva è isomorfa ad $H^0(S^1)$, quindi in sostanza $$H^0(S^1)\simeq\mathbb{R}$$
+Inoltre dal momento che dim$Im\delta=1$ anche il nucleo di $d^*$ avrà dimensione 1, ma questo significa che dim$Imd^*=1$ ed essendo per esattezza della sequenza $d^*$ suriettiva si ha che $$H^1(S^1)\simeq\mathbb{R}$$
+Riassumendo:
+\begin{equation}
+    H^q(S^1)=
+    \begin{cases}
+        \mathbb{R} & se \quad q\in\{0;1\} \\
+        0 & se \quad q\notin\{0;1\}
+    \end{cases}
+\end{equation}
+Risulta molto utile in questo caso anche calcolare un generatore di 
+$H^1(S^1)$:
+si ponga $\alpha\in\Omega^0(U\cap V)$ una forma chiusa tale che $\alpha\notin Im\delta$, allora la sua immagine tramite $d^*$ rappresenterà un generatore di $H^1(S^1)$, infatti se si prende $\alpha$ come la forma che vale costantemente 1 nella parte superiore dell'intersezione $U\cap V$ e costantemente 0 nella parte inferiore, si ottiene, come si vede dalla figura, che l'immagine di $(-p_V\omega,p_U\omega)$ attraverso $d$ coincide nell'intersezione e quindi genera una forma globale su $S^1$ che si rivela essere una 1-forma d'urto con supporto contenuto in $U\cap V$.
+\begin{figure}
+    \centering
+    \includegraphics[width=11cm]{immagine_tesi2.png}
+        \caption{Generatore di $H^1(S^1)$}
+        \label{fig:enter-label}
+\end{figure}
+\end{ese1}
+\subsection{La sequenza di Mayer-Vietoris a supporto compatto}
+Un discorso analogo a quello della sezione precedente si può fare per le forme a supporto compatto, anch'esse hanno un funtore $\Omega_c^*$ ed una sequenza di Mayer-Vietoris ma con delle leggere differenze rispetto alle loro versioni precedenti.
+
+Queste differenze derivano dal fatto che la mappa di pullback di una funzione a supporto compatto non ha per forza supporto compatto, quindi $\Omega_c^*$ necessita di una definizione diversa rispetto a quella di $\Omega^*$. Questo problema si può ovviare in due modi:
+\begin{enumerate}
+    \item [1.]$\Omega_c^*$ è un funtore controvariante dalla categoria delle varietà differenziabili con le mappe proprie alla categoria delle algebre differenziali graduate commutative con i loro omomorfismi.
+    \item [2.]$\Omega_c^*$ è un funtore covariante dalla categoria delle varietà differenziabili con le inclusioni di insiemi aperti alla categoria delle algebre differenziali graduate commutative con i loro omomorfismi.
+\end{enumerate}
+Solitamente si utilizza la seconda proprietà, quindi da ora in poi si consideri $\Omega_c^*$ come un funtore covariante che agisce nel seguente modo: se $j:U\rightarrow M$ è l'inclusione di $U\subseteq M$ aperto nella varietà $M$, si ha $\Omega_c^*(j)=j^*:\Omega_c^*(U)\rightarrow\Omega_c^*(M)$ che estende tramite 0 una forma differenziale su $U$ ad una forma differenziale su $M$.
+
+Considerando la sequenza di inclusioni
+\begin{center}
+\begin{tikzcd}
+    U\cap V \arrow[r, hook, shift left, "\delta_0"] 
+    \arrow[r, hook, shift right, "\delta_1" ']
+    &U\coprod V \arrow[r, hook, shift left, "i"]
+    \arrow[r, hook, shift right, "j" ']
+    &M
+\end{tikzcd}    
+\end{center}
+si ottiene
+\begin{center}
+\begin{tikzcd}
+    \Omega^*(U\cap V) \arrow[r, "\delta"] 
+    &\Omega^*(U)\oplus \Omega^*(V) \arrow[r, "i^*+j^*"]
+    &\Omega^*(M)
+\end{tikzcd}    
+\end{center}
+dove $\delta(\omega)=(-\delta_0^*\omega,\delta_1^*\omega)$.
+
+La sequenza
+\begin{center}
+\begin{tikzcd}
+    0 \arrow[r]
+    &\Omega^*(U\cap V) \arrow[r, "\delta"] 
+    &\Omega^*(U)\oplus \Omega^*(V) \arrow[r, "i^*+j^*"]
+    &\Omega^*(M) \arrow[r]
+    &0
+\end{tikzcd}    
+\end{center}
+si dice \textit{Sequenza di Mayer-Vietoris a supporto compatto}.
+\begin{prop1}
+    La sequenza di Mayer-Vietoris a supporto compatto è esatta.
+    \begin{proof}
+        Anche in questo caso controlliamo l'esattezza solo in $\Omega^*(M)$ perchè altrove è banale. Siano $\omega\in\Omega^*(M)$ e $\{p_U;p_V\}$ partizione dell'unità subordinata a $\{U;V\}$, allora $\omega=(i^*+j^*)(p_U\omega,p_V\omega)$.
+        \begin{oss1}
+            Si può dire con tranquillità che $p_U\omega\in\Omega^*(U)$ e $p_V\omega\in\Omega^*(V)$ poichè $Supp(p_U\omega)\subseteq Supp(p_U)\cap Supp(\omega)$, quindi è un chiuso dentro un compatto in uno spazio Hausdorff, quindi è compatto. Analogamente per $p_V\omega$.
+        \end{oss1}
+    \end{proof}
+\end{prop1}
+
+Per esattezza la sequenza di Mayer-Vietoris induce in coomologia una sequenza esatta lunga
+\begin{center}
+\begin{tikzcd}
+    [cells={nodes={text height=2ex,text depth=0.75ex}}]
+    H_c^{k+1}(U\cap V) \arrow[r, "\delta"] & H_c^{k+1}(U) \oplus H_c^{k+1}(V) \arrow[r] & \cdots \\
+    H_c^{k}(U\cap V) \arrow[r, "\delta"] & H_c^{k}(U) \oplus H_c^{k}(V) \arrow[r, "i^*+j^*"] \arrow[draw=none]{u}[name=Y, shape=coordinate]{} \arrow[draw=none]{d}[name=Z,shape=coordinate]{} & H_c^{k}(M) \arrow[curarrow=Y]{ull}{} \\
+    \cdots \arrow[r] & H_c^{k-1}(U) \oplus H_c^{k-1}(V) \arrow[r, "i^*+j^*"] & H_c^{k-1}(M) \arrow[curarrow=Z]{ull}{}
+\end{tikzcd}
+\end{center}
+\begin{ese1}[Coomologia a supporto compatto di $S^1$]
+    Ovviamente essendo $S^1$ compatto $\mathbb{H}_c^*(S^1)=\mathbb{H}^*(S^1)$, infatti il caso preso in considerazione è
+    \begin{center}
+    \begin{tikzcd}
+       [cells={nodes={text height=2ex,text depth=0.75ex}}]
+      H_c^*(U\cap V) & H_c^*(U)\oplus H_c^*(V) & H_c^*(S^1) \\
+       0 \arrow[r, "\delta"] & 0 \arrow[r] & \cdots \\
+       \mathbb{R}\oplus\mathbb{R} \arrow[r, "\delta"] & \mathbb{R}\oplus\mathbb{R} \arrow[r, "i^*+j^*"] \arrow[draw=none]{u}[name=Y, shape=coordinate]{} \arrow[draw=none]{d}[name=Z,shape=coordinate]{} & H^1_c(S^1) \arrow[curarrow=Y]{ull}{} \\
+       0\arrow[r, "\delta"] & 0 \arrow[r, "i^*+j^*"] & H_c^0(S^1) \arrow[curarrow=Z]{ull}{}
+    \end{tikzcd}
+    \end{center}
+    Se $\omega=(\omega1,\omega2)\in H_c^1(U\cap V)$ allora $\delta\omega=(-i^*\omega,j^*\omega)\in H_c^1(U)\oplus H_c^1(V)$, ciò significa che dim$Im\delta=1$ e quindi dim$ker\delta=1$. Per gli stessi ragionamenti usati nell'esempio analogo si ottiene che 
+    \begin{equation}
+    H_c^q(S^1)=H^q(S^1)=
+    \begin{cases}
+        \mathbb{R} & se \quad q\in\{0;1\} \\
+        0 & se \quad q\notin\{0;1\}
+    \end{cases}
+\end{equation}
+\end{ese1}
+
+\chapter{La dualità di Poincarè}
+In questo capitolo si enunceranno i lemmi di Poincarè, che definscono la coomologia di $\mathbb{R}^n$, e si vedranno le loro conseguenze tramite degli importanti teoremi. 
+
+\section{Il lemma di Poincarè}
+Si considerino le funzioni 
+\begin{center}
+\begin{tikzcd}
+    \mathbb{R}^n\times\mathbb{R} \arrow[d, shift left, "\pi"] & \Omega^*(\mathbb{R}^n\times\mathbb{R}) \arrow[d, shift left, "s^*"] \\
+    \mathbb{R}^n \arrow[u, shift left, "s"] & \Omega^*(\mathbb{R}^n) \arrow[u, shift left, "\pi^*"] 
+\end{tikzcd}
+\end{center}
+con $\pi(x,t)=x$ la proiezione sul primo fattore e $s(x)=(x,0)$ la sezione zero. Si vuole mostrare che $\pi^*$ e $s^*$ inducono isomorfismi inversi in coomologia e dunque $$H^*(\mathbb{R}^n\times\mathbb{R})\simeq H^*(\mathbb{R}^n)$$
+Per farlo si mostra che $\pi^*\circ s^*=1_{H^*(\mathbb{R}^n)}$ e $s^*\circ\pi^*=1_{H(\mathbb{R}^n\times\mathbb{R})}$, ovvero $s^*$ e $\pi^*$ sono isomorfismi inversi.
+
+Poichè $\pi\circ s=1_{\mathbb{R}^n}$, $s^*\circ \pi^*$ e $1_{\mathbb{R}^n}$ sono banalmente omotope mentre invece si vede facilmente che $\pi^*\circ s^*\neq1_{\Omega^*(\mathbb{R}^n\times\mathbb{R})}$, quindi cerchiamo un operatore di omotopia $K$ tale che $$1-\pi^*\circ s^*=\pm(dK\pm Kd)$$
+Questo perchè se esiste un operatore $K$ del genere, applicando $1-\pi^*\circ s^*$ ad una forma chiusa $\omega$, si ha che $Kd\omega=0$ e quindi $(1-\pi^*\circ s^*)\omega=dK\omega\in Imd$, che in coomologia è la classe di 0, quindi in coomologia $(1-\pi^*\circ s^*)$ è la funzione nulla, ovvero $\pi^*\circ s^*=1$.
+
+Dal momento che ogni forma in $\Omega^*(\mathbb{R}^n\times\mathbb{R})$ si scrive unicamente come combinazione lineare di forme dei tipi:
+\begin{enumerate}
+    \item[1]$(\pi^*\phi)f(x,t)$
+    \item[2]$(\pi^*\phi)f(x,t)dt$
+\end{enumerate}
+con $\phi\in\Omega^*(\mathbb{R}^n)$, basta definire $K$ su di essi, poniamo quindi $$K:\Omega^q(\mathbb{R}^n\times\mathbb{R})\rightarrow\Omega^{q-1}(\mathbb{R}^n\times\mathbb{R})$$ con
+\begin{enumerate}
+    \item[1]$(\pi^*\phi)f(x,t)\mapsto0$
+    \item[2]$(\pi^*\phi)f(x,t)dt\mapsto(\pi^*\phi)\int\limits_0^tf$
+\end{enumerate}
+
+In questo modo su forme $\omega=(\pi^*\phi)f(x,t)$ del tipo 1 si ha che
+\begin{align*}
+    (1-\pi^*\circ s^*)\omega&=(\pi^*\phi)f(x,t)-(\pi^*\phi)f(x,0) \\
+    (dK-Kd)\omega&=-Kd\omega=-K\Bigg((d\pi^*\phi)f+(-1)^q\pi^*\phi\Bigg(\frac{\partial f}{\partial x}dx+\frac{\partial f}{\partial t}dt\Bigg)\Bigg) \\
+    &=(-1)^{q-1}\pi^*\phi\int\limits_0^t\frac{\partial f}{\partial t} \\
+    &=(-1)^{q-1}\pi^*\phi(f(x,t)-f(x,0))
+\end{align*}
+
+Invece su forme $\omega=(\pi^*\phi)f(x,t)dt$ del tipo 2 si ha che
+\begin{align*}
+    (1-\pi^*\circ s^*)\omega&=\omega \quad \text{poichè $s^*(dt)=d(s^*t)=d0=0$} \\
+    Kd\omega&=(\pi^*d\phi)\int\limits_0^tf+(-1)^{q-1}(\pi^*\phi)dx\int\limits_0^t\frac{\partial f}{\partial x} \\
+    dK\omega&=(\pi^*d\phi)\int\limits_0^tf+(-1)^{q-1}(\pi^*\phi)\Bigg(dx\int\limits_0^t\frac{\partial f}{\partial x}+fdt\Bigg) \\
+    (dK-Kd)\omega&=(-1)^{q-1}\omega
+\end{align*}
+
+Quindi in entrambi i casi $(1-\pi^*\circ s^*)\omega=(-1)^{q-1}(dK-Kd)\omega$, quindi si può dire per il ragionamento precedente che
+\begin{equation}
+   H^*(\mathbb{R}^n\times\mathbb{R})\simeq H^*(\mathbb{R}^n).
+\end{equation}
+
+\begin{teo1}[Lemma di Poincarè]
+    \begin{equation}
+        H^q(\mathbb{R}^n)=H^q(\mathbb{R}^0)=
+        \begin{cases}
+        \mathbb{R} & se \quad q=0 \\
+        0 & se \quad q\neq0
+       \end{cases}
+    \end{equation}
+    \begin{proof}
+        La dimostrazione è ovvia applicando per induzione la (2.1).
+    \end{proof}
+\end{teo1}
+Generalizzando questo teorema si ottiene che se $M$ è una varietà si possono considerare le funzioni 
+\begin{center}
+\begin{tikzcd}
+    M\times\mathbb{R} \arrow[d, shift left, "\pi"] \\
+    M \arrow[u, shift left, "s"]
+\end{tikzcd}
+\end{center}
+
+Se $\{U_{\alpha}\}_{\alpha\in I}$ è un ricoprimento aperto per $M$ allora $\{U_{\alpha}\times\mathbb{R}\}_{\alpha\in I}$ è un ricoprimento aperto per $M\times\mathbb{R}$, quindi si può ripetere la stessa dimostrazione del lemma di Poincarè per mostrare che 
+\begin{equation}
+    H^*(M\times\mathbb{R})\simeq H^*(M).
+\end{equation}
+tramite gli isomorfismi inversi in coomologia $s^*$ e $\pi^*$.
+
+\begin{cor1}[Assioma di omotopia per la coomologia di De Rham]
+    Mappe omotope inducono la stessa mappa in coomologia.
+    \begin{proof}
+        Siano $M$ e $N$ due varietà e $f,g:M\rightarrow N$ mappe omotope con omotopia $F:M\times\mathbb{R}\rightarrow N$,
+        \begin{equation*}
+        F(x,t)=
+        \begin{cases}
+            f(x) & se \quad t\geq1 \\
+            g(x) & se \quad t\leq0
+        \end{cases}
+        \end{equation*}
+        Siano $s_0,s_1:M\rightarrow M\times\mathbb{R}$ la sezione 0 e la sezione 1, ovvero $s_0(x)=(x,0)$ e $s_1(x)=(x,1)$, allora $f=F\circ s_1$ e $g=F\circ s_0$, di conseguenza $f^*=(F\circ s_1)^*=s_1^*\circ F^*$ e $g^*=(F\circ s_0)^*=s_0^*\circ F^*$. Dal momento che $s_0^*$ e $s_1^*$ sono entrambe inverse di $\pi^*$, $s_0^*=s_1^*$, quindi $f^*=g^*$.
+    \end{proof}
+\end{cor1}
+
+Se tra due varietà $M$ e $N$ esistono due funzioni $C^{\infty}$ $f:M\rightarrow N$ e $g:N\rightarrow M$ tali che $f\circ g$ e $g\circ f$ sono omotope rispettivamente a $1_N$ e $1_M$ allora si dice che \textit{$M$ e $N$ hanno lo stesso tipo di omotopia nel senso $C^{\infty}$}. Una varietà che ha lo stesso tipo di omotopia di un punto si dice \textit{contraibile}.
+
+\begin{cor1}
+    Due varietà con lo stesso tipo di omotopia hanno la stessa coomologia di De Rham.
+\end{cor1}
+
+\begin{cor1}
+    Se $A\subseteq M$ è un retratto per deformazione della varietà $M$ allora $A$ e $M$ hanno la stessa coomologia di De Rham.
+\end{cor1}
+
+\begin{ese1}[Coomologia di $S^n$]
+    \begin{figure}
+        \centering
+        \includegraphics[width=11cm]{immagine_tesi3.png}
+        \caption{Ricoprimento aperto di $S^n$}
+        \label{fig:enter-label}
+    \end{figure}
+    Si prenda un ricoprimento aperto $\{U;V\}$ di $S^n$ come in figura, con $U$ poco più grande dell'emisfero superiore e $V$ poco più grande dell'emisfero inferiore. A questo punto $U\cap V$ risulta chiaramente essere diffeomorfo a $S^{n-1}\times\mathbb{R}$, la cui coomologia per (2.3) è $$H^*(S^{n-1}\times\mathbb{R})=H^*(S^{n-1})$$
+    Invece essendo $U$ e $V$ contraibili avranno la stessa coomologia di un punto.
+    Ora si può procedere senza problemi per induzione utilizzando la sequenza di Mayer-Vietoris. Si vuole dimostrare che $\forall n\in\mathbb{N},n\geq1$
+    \begin{equation}
+        H^q(S^n)=
+        \begin{cases}
+            \mathbb{R} & se \quad q\in\{0;n\} \\
+            0 & se \quad q\notin\{0;n\}
+        \end{cases}
+    \end{equation}
+    Il passo base con $n=1$ sappiamo essere già valido, quindi consideriamo $n>1$. Nella parte iniziale della catena si ha:
+    \begin{center}
+    \begin{tikzcd}
+        [cells={nodes={text height=2ex,text depth=0.75ex}}]
+        H^*(S^n) & H^*(U)\oplus H^*(V) & H^*(S^{n-1}) \\
+        H^2(S^n) \arrow[r, "i^{*}"] & 0 \arrow[r] & \cdots \\
+        H^{1}(S^n) \arrow[r, "i^{*}"] & 0 \arrow[r, "\delta"] \arrow[draw=none]{u}[name=Y, shape=coordinate]{} \arrow[draw=none]{d}[name=Z,shape=coordinate]{} & H^1(S^{n-1}) \arrow[curarrow=Y]{ull}{} \\
+        H^0(S^n) \arrow[r, "i^*"] & \mathbb{R}\oplus\mathbb{R} \arrow[r, "\delta"] & \mathbb{R} \arrow[curarrow=Z]{ull}{}
+    \end{tikzcd}
+    \end{center}
+    Dal momento che $\delta(\omega,\tau)=(\tau-\omega)$ essa non è la funzione nulla, quindi $dimIm\delta=1=dimkerd^*$, quindi $d^*$ è la funzione nulla, il che significa che $$H^1(S^n)=0$$ inoltre dal momento che $dimIm\delta=1$ allora anche $dimker\delta=1=dimImi^*$, quindi si ha che $$H^0(S^n)=\mathbb{R}$$
+    
+    Ora $\forall q\in\mathbb{N}^*$ si ha che $H^q(S^{n-1})=H^{q+1}(S^n)$ e quindi grazie all'ipotesi induttiva si può dire che 
+    \begin{equation*}
+        H^q(S^n)=
+        \begin{cases}
+            \mathbb{R} & se \quad q\in\{0;n\} \\
+            0 & se \quad q\notin\{0;n\}
+        \end{cases}
+    \end{equation*}
+\end{ese1}
+
+\subsection{Il lemma di Poincarè a supporto compatto}
+Anche la coomologia a supporto compatto ha una propria versione del lemma di Poincarè, ma in questo caso la dimensione sarà scalata di 1, ovvero si otterrà che $$H_c^{*+1}(\mathbb{R}^n\times\mathbb{R})=H_c^{*}(\mathbb{R}^n)$$
+
+Più in generale si consideri la proiezione $\pi:M\times\mathbb{R}\rightarrow M$, poichè la sua mappa di pullback applicata ad una forma a supporto compatto su $M$ non porterebbe per forza ad una forma a supporto compatto su $M\times\mathbb{R}$ è necessario definire una nuova mappa $\pi_*:\Omega_c^*(M\times\mathbb{R})\rightarrow\Omega_c^{*-1}(M)$, detta \textit{integrazione lungo le fibre}.
+
+Una forma a supporto compatto su $M\times\mathbb{R}$ si può scrivere unicamente come combinazione lineare di forme di due tipi:
+\begin{enumerate}
+    \item[1]$\pi^*\phi f(x,t)$
+    \item[2]$\pi^*\phi f(x,t)dt$
+\end{enumerate}
+con $\phi\in\Omega^*(M)$ e $f$ funzione a supporto compatto su $M\times\mathbb{R}$. $\pi_*$ è definita da:
+\begin{enumerate}
+    \item[1]$\pi^*\phi f(x,t)\mapsto0$ 
+    \item[2]$\pi^*\phi f(x,t)dt\mapsto\phi\int\limits_{-\infty}^{+\infty}f(x,t)dt$
+\end{enumerate}
+
+Considerando $e=e(t)$ una 1-forma a supporto compatto su $\mathbb{R}$ con integrale totale 1, si definisce anche una mappa $e_*:\Omega_c^*(M)\rightarrow\Omega_c^{*+1}(M\times\mathbb{R})$, data da $e_*(\phi)=\phi\wedge e$, che va nella direzione opposta di $\pi_*$.
+Si dimostra facilmente che $\pi_*$ e $e_*$ sono chain map e che quindi inducono mappe in coomologia. Si vuole utilizzare lo stesso procedimento della dimostrazione del lemma di Poicarè per dimostrare che $\pi_*$ e $e_*$ sono mappe inverse in coomologia. Dalla loro definizione è chiaro che $\pi_*\circ e_*=1_{\Omega_c^*(M)}$, ma d'altra parte $e_*\circ\pi_*\neq1_{\Omega_c^*(M\times\mathbb{R})}$ quindi si cerca un operatore di omotopia $K$ tale che $$1-e_*\pi_*=\pm(dK\pm Kd)$$
+Per semplificare le notazioni siano $\phi f=\pi^*\phi f(x,t)$ e $\int f=\int f(x,t)dt$. Si definisce k tramite
+\begin{enumerate}
+    \item[1]$\phi f\mapsto0$ 
+    \item[2]$\phi fdt\mapsto\phi\int\limits_{-\infty}^tf-\phi A(t)\int\limits_{-\infty}^{+\infty}f$ 
+\end{enumerate}
+dove $A(t)=\int\limits_{-\infty}^te$.
+
+Su forme del primo tipo con $deg\phi=q$ si ha:
+\begin{align*}
+    (1-e_*\pi_*)\phi f&=\phi f \\
+    (dK-Kd)\phi f&=-Kd\phi f=-K\Bigg(d\phi f+(-1)^q\phi\frac{\partial f}{\partial x}dx+(-1)^q\phi\frac{\partial f}{\partial t}dt\Bigg) \\
+    &=(-1)^{q-1}\Bigg(\phi\int\limits_{-\infty}^t\frac{\partial f}{\partial t}-\phi A(t)\int\limits_{-\infty}^{+\infty}\frac{\partial f}{\partial t}\Bigg) \\
+    &=(-1)^{q-1}\phi f \quad \text{poichè $\int\limits_{-\infty}^{+\infty}\frac{\partial f}{\partial t}=f(x,+\infty)-f(x,-\infty)=0$}
+\end{align*}
+
+Su forme del secondo tipo con $deg\phi=q-1$ invece si ha:
+\begin{align*}
+    (1-e_*\pi_*)\phi f&=\phi fdt-\phi\Bigg(\int\limits_{-\infty}^{+\infty}f\Bigg)\wedge e \\
+    dK(\phi fdt)&=(d\phi)\int\limits_{-\infty}^{t}f+(-1)^{q-1}\phi\int\limits_{-\infty}^{t}\frac{\partial f}{\partial x}dxdt+(-1)^{q-1}\phi fdt \\
+    &-(d\phi)A(t)\int\limits_{-\infty}^{+\infty}f-(-1)^{q-1}\phi\Bigg[e\int\limits_{-\infty}^{+\infty}f+A(t)\Bigg(\int\limits_{-\infty}^{+\infty}\frac{\partial f}{\partial x}\Bigg)dx\Bigg] \\
+    Kd(\phi fdt)&=K\Bigg((d\phi)fdt+(-1)^{q-1}\phi\frac{\partial f}{\partial x}dxdt\Bigg) \\
+    &=(d\phi)\int\limits_{-\infty}^{t}f-(d\phi)A(t)\int\limits_{-\infty}^{+\infty}f+(-1)^{q-1}\Bigg[\phi\int\limits_{-\infty}^{t}\frac{\partial f}{\partial x}dxdt-\phi A(t)\Bigg(\int\limits_{-\infty}^{+\infty}\frac{\partial f}{\partial x}\Bigg)dx\Bigg] \\
+    (dK-Kd)\phi fdt&=(-1)^{q-1}\Bigg[\phi fdt-\phi\Bigg(\int\limits_{-\infty}^{+\infty}f\Bigg)e\Bigg]
+\end{align*}
+
+Quindi in entrambi i casi la formula è verificata, dunque $K$ è un operatore omotopico.
+
+Questo dimostra che $\pi_*$ e $e_*$ sono isomorfismi inversi in coomologia e che quindi
+\begin{equation}
+    H_c^*(M\times \mathbb{R})\simeq H_c^{*-1}(M)
+\end{equation}
+
+\begin{teo1}[Lemma di Poincarè a supporto compatto]
+    \begin{equation}
+        H_c^q(\mathbb{R}^n)=
+        \begin{cases}
+        \mathbb{R} & se \quad q=n \\
+        0 & se \quad q\neq n
+       \end{cases}
+    \end{equation}
+    \begin{proof}
+        La dimostrazione è ovvia applicando per induzione la (2.5).
+    \end{proof}
+\end{teo1}
+
+Per determinare un generatore di $H_c^n(\mathbb{R}^n)$ quindi si parte dalla funzione su un punto che vale 1 per applicare n volte la funzione $e_*$, ottenendo così una funzione d'urto su $\mathbb{R}^n$ con integrale totale 1.
+
+\begin{oss1}
+    Si può richiedere che il supporto di un generatore di $H_c^n(\mathbb{R}^n)$ sia piccolo a scelta.
+\end{oss1}
+
+\begin{oss1}
+    Il lemma di Poincarè a supporto compatto rende chiaro che la coomologia a supporto compatto non è un invariante per equivalenza omotopica, sebbene lo sia ovviamente per diffeomorfismi.
+\end{oss1}
+
+\section{L'argomento di Mayer-Vietoris}
+L'argomento di Mayer-Vietoris è un metodo di dimostrazione molto utile che sfrutta l'omonima sequenza e il lemma dei 5 per ragionare induttivamente sulla cardinalità dei ricoprimenti aperti.
+
+\begin{def1}[Good cover]
+    Sia $M$ una varietà di dimensione $n$ con un ricoprimento aperto $\mathfrak{U}=\{U_{\alpha}\}_{\alpha\in I}$, allora $\mathfrak{U}$ si dice good cover di $M$ se tutte le sue intersezioni finite $U_1\cap\ldots\cap U_p$ sono diffeomorfe a $\mathbb{R}^n$.
+\end{def1}
+Una varietà con un good cover finito di dice \textit{di tipo finito}.
+
+\begin{teo1}
+    Ogni varietà ha un good cover, inoltre se la varietà è compatta il good cover può essere finito.
+\end{teo1}
+
+Se $\mathfrak{U}=\{U_{\alpha}\}_{\alpha\in I}$ e $\mathfrak{V}=\{V_{\beta}\}_{\beta\in J}$ sono ricoprimenti aperti della varietà $M$, si dice che $\mathfrak{V}$ è un \textit{raffinamento} di $\mathfrak{U}$ se $\forall\beta\in J \quad \exists\alpha\in I:V_{\beta}\subseteq U_{\alpha}$, o equivalentemente se esiste una mappa $\phi:J\rightarrow I$ tale che $\forall\beta\in J \quad V_{\alpha}\subseteq U_{\beta}$.
+
+\begin{teo1}
+    Ogni ricoprimento aperto di una varietà ha un raffinamento che è un good cover.
+\end{teo1}
+
+La dimostrazione dei teoremi 2.10 e 2.11 può essere trovata su \textit{Differential Forms In Algebraic Topology} di R. Bott e L. W. Tu pag. 42-43.
+
+L'esistenza dei good cover è fondamentale per quello di cui si vuole parlare, dal momento che l'argomento di Mayer-Vietoris, come tutti gli argomenti di cui andremo a parlare in seguito, regge solo per le varietà che ne hanno uno. In realtà l'ipotesi della finitezza del good cover non è necessaria per l'argomento di Mayer-Vietoris, infatti questo può essere esteso ad ogni varietà orientabile.
+
+\begin{prop1}
+    Se una varietà $M$ ha un good cover finito allora la sua coomologia ha dimensione finita.
+    \begin{proof}
+        Dalla sequenza di Mayer-Vietoris
+        \begin{center}
+        \begin{tikzcd}
+            \ldots \arrow[r]
+            &H^{q-1}(U\cap V) \arrow[r, "d^*"]
+            &H^q(U\cup V) \arrow[r, "i^*"]
+            &H^q(U)\oplus H^q(V) \arrow[r] 
+            &\ldots
+        \end{tikzcd}
+        \end{center}
+        si ottiene che $$H^q(U\cup V)\simeq keri^*\oplus Imi^*\simeq Imd^*\oplus Imi^*\subseteq H^{q-1}(U\cap V)\oplus H^q(U)\oplus H^q(V)$$ quindi se le coomologie di $U$, $V$ e $U\cap V$ hanno dimensione finita allora anche quella di $U\cup V$ ha dimensione finita.
+
+        Se una varietà è diffeomorfa a $\mathbb{R}^n$ la dimensione finita della sua coomologia deriva dal lemma di Poincarè, quindi ora basta procedere per induzione sul numero di elementi del good cover finito della varietà.
+
+        Supponendo per induzione che ogni varietà con un good cover finito di al massimo $p$ elementi abbia coomologia di dimensione finita, si consideri una varietà con un good cover di $p+1$ elementi $\{U_0,\ldots,U_p\}$, si prendano gli insiemi $U_0\cup\ldots\cup U_{p-1}$ e $U_p$, che hanno banalmente un good cover finito di rispettivamente $p$ e 1 elementi, allora anche $(U_0\cup\ldots\cup U_{p-1})\cap U_p$ ha un good cover finito di p elementi $\{(U_0\cap U_p),\ldots,(U_{p-1}\cap U_p)\}$, quindi questi tre insiemi per ipotesi induttiva hanno tutti coomologia di dimensione finita, dunque per il ragionamento precedente anche l'unione $(U_0\cup\ldots\cup U_{p-1})\cup U_p=M$ ha coomologia di dimensione finita.
+    \end{proof}
+\end{prop1}
+\begin{prop1}
+    Se una varietà $M$ ha un good cover finito allora la sua coomologia a supporto compatto ha dimensione finita.
+    \begin{proof}
+        La dimostrazione è analoga a quella della proposizione precedente.
+    \end{proof}
+\end{prop1}
+
+\subsection{La dualità di Poincarè}
+Si ricorda che se $V$ e $W$ sono due spazi vettoriali di dimensione finita, un prodotto scalare $<,>:V\otimes W\rightarrow\mathbb{R}$ si dice \textit{non degenere} se $<v,w>=0 \quad \forall w\in W$ implica che $v=0$, inoltre in questo caso la mappa $v\mapsto<v,>$ definisce un isomorfismo $V\simeq(W)^*$.
+
+Considerando ora una varietà orientata $M$ di dimensione $n$ e la mappa di integrazione $$\int:H^q(M)\otimes H_c^{n-q}(M)\rightarrow\mathbb{R}$$ data dall'integrale del prodotto wedge di due forme, si vuole dimostrare che è non degenere se $M$ ha un good cover finito, o quivalentemente $$H^q(M)\simeq(H_c^{n-q}(M))^*$$
+
+Per dimostrarlo son però necessari due lemmi.
+
+\begin{lem1}[Lemma dei 5]
+    Dato il diagramma commutativo di gruppi abeliani
+    \begin{center}
+    \begin{tikzcd}
+        \ldots \arrow[r]
+        & A \arrow[r, "f_1"] \arrow[d, "\alpha"]
+        & B \arrow[r, "f_2"] \arrow[d, "\beta"]
+        & C \arrow[r, "f_3"] \arrow[d, "\gamma"]
+        & D \arrow[r, "f_4"] \arrow[d, "\delta"]
+        & E \arrow[r] \arrow[d, "\epsilon"]
+        & \ldots \\
+        \ldots \arrow[r]
+        & A' \arrow[r, "f_1'" ']
+        & B' \arrow[r, "f_2'" ']
+        & C' \arrow[r, "f_3'" ']
+        & D' \arrow[r, "f_4'" ']
+        & E' \arrow[r]
+        & \ldots 
+    \end{tikzcd}
+    \end{center}
+    con le righe esatte e con $\alpha,\beta,\delta,\epsilon$ isomorfismi, allora anche $\gamma$ è un isomorfismo.
+\end{lem1}
+
+\begin{lem1}
+    Le due sequenze di Mayer-Vietoris possono essere accoppiate tramite un prodotto scalare in modo da formare il diagramma commutativo a meno di segno
+    \begin{center}
+    \begin{tikzcd}
+        [cramped, sep=small]
+        \ldots \arrow[r]
+        & H^q(U\cup V) \arrow[r, "i^*"] 
+        & H^q(U)\oplus H^q(V) \arrow[r, "\delta"] 
+        & H^q(U\cap V) \arrow[r, "d^*"] 
+        & H^{q+1}(U\cup V) \arrow[r] 
+        & \ldots \\
+        & \otimes
+        & \otimes
+        & \otimes
+        & \otimes \\ 
+        \ldots
+        & H_c^{n-q}(U\cup V) \arrow[l] \arrow[ddd, "\int\limits_{U\cup V}"]
+        & H_c^{n-q}(U)\oplus H_c^{n-q}(V) \arrow[l, "i^*+j^*" '] \arrow[ddd, "\int\limits_{U\cap V}"]
+        & H_c^{n-q}(U\cap V) \arrow[l, "\delta" '] \arrow[ddd, "\int\limits_U+\int\limits_V"]
+        & H_c^{n-q-1}(U\cup V) \arrow[l, "d^*" '] \arrow[ddd, "\int\limits_{U\cup V}"]
+        & \ldots \arrow[l] \\
+        \\
+        \\
+        &\mathbb{R}
+        &\mathbb{R}
+        &\mathbb{R}
+        &\mathbb{R}
+    \end{tikzcd}
+    \end{center}
+    ovvero il diagramma
+    \begin{center}
+    \begin{tikzcd}
+        \ldots \arrow[r]
+        & H^q(U\cup V) \arrow[r] \arrow[d]
+        & H^q(U)\oplus H^q(V) \arrow[r] \arrow[d] 
+        & H^q(U\cap V) \arrow[r] \arrow[d]
+        &\ldots \\
+        \ldots \arrow[r]
+        & (H_c^{n-q}(U\cup V))^* \arrow[r]
+        & (H_c^{n-q}(U))^*\oplus(H_c^{n-q}(V))^* \arrow[r] 
+        & (H_c^{n-q}(U\cap V))^* \arrow[r]
+        &\ldots \\
+    \end{tikzcd}
+    \end{center}
+    è commutativo a meno di segno.
+    In questo caso con diagramma commutativo a meno di segno di intende che ad esempio se si ha $\omega\in H^q(U\cap V)$ e $\tau\in H_c^{n-q-1}(U\cup V)$, allora $\int\limits_{U\cap V}\omega\wedge d^*\tau=\pm\int\limits_{U\cup V}d^*\omega\wedge\tau$.
+    \begin{proof}
+        La commutatività è banale eccetto per il terzo quadrato, dunque si considerino $\omega\in H^q(U\cap V)$ e $\tau\in H_c^{n-q-1}(U\cup V)$. Si ricorda che presa una partizione dell'unità $\{p_U;p_V\}$ subordinata a $\{U;V\}$ si ha che
+        \begin{equation*}
+            d^*\omega=
+            \begin{cases}
+                -d(p_V\omega)=-(dp_V)\omega & su \quad U \\
+                d(p_U\omega) & su \quad V                
+            \end{cases}
+        \end{equation*}
+        e $d^*\tau=d(p_U\tau)=d(p_V\tau)=(dp_V)\tau$. $$\int\limits_{U\cap V}\omega\wedge d^*\tau=\int\limits_{U\cap V}\omega\wedge (dp_V)\tau=(-1)^{deg\omega}\int\limits_{U\cap V}(dp_V)\omega\wedge\tau=(-1)^{deg\omega+1}\int\limits_{U\cap V}d^*\omega\wedge \tau$$ poichè $d^*\omega$ ha supporto in $U\cap V$.
+    \end{proof}
+\end{lem1}
+
+\begin{teo1}
+    Siano $n$ e $q$ interi, sia $M$ una varietà orientabile di dimensione $n$ con un good cover finito, allora $H^q(M)\simeq(H_c^{n-q}(M))^*$.
+    \begin{proof}
+        Per il lemma dei 5 se questo isomorfismo vale per $U$,$V$ e $U\cap V$, allora vale anche per $U\cup V$. Ora si procede per induzione tramite l'argomento di Mayer-Vietoris come già fatto in precedenza. Per una varietà $M$ diffeomorfa a $\mathbb{R}^n$ la dualità di Poincarè è valida per via dei lemmi di Poincarè, dunque considerando vero che per ogni varietà con un good cover finito con al più $p$ elementi valga la dualità di Poincarè, si consideri una varietà $M$ con un good cover $\{U_0,\ldots,U_p\}$ di $p$ elementi. Si prendano gli insiemi $U_0\cup\ldots\cup U_{p-1}$ e $U_p$. Essi hanno banalmente un good cover di relativamente $p$ e 1 elementi ed anche la loro intersezione ha un good cover $\{(U_0\cap U_p),\ldots,(U_{p-1}\cap U_p)\}$ di $p$ elementi. Questo significa che per il lemma dei 5 la dualità di Poincarè vale anche per $U_0\cup\ldots\cup U_p=M$.
+    \end{proof}
+\end{teo1}
+
+Anche in questo caso l'ipotesi di finitezza del good cover non è in realtà necessaria, così si sviluppa un teorema più completo.
+
+\begin{teo1}[Dualità di Poincarè]
+    Siano $n$ e $q$ interi, sia $M$ una varietà orientabile di dimensione $n$, allora $H^q(M)\simeq(H_c^{n-q}(M))^*$.
+\end{teo1}
+
+L'opposto $H_c^q(M)\simeq(H^{n-q}(M))^*$ non è sempre vero e l'asimmetria nasce dal fatto che il duale di una somma diretta è un prodotto diretto ma il duale di un prodotto diretto non è una somma diretta. Per capire meglio si prenda $$M=\sum_{i=1}^{+\infty}M_i$$ dove le $M_i$ sono varietà di tipo finito di dimensione $n$, allora si ha che: $$H^q(M)=\prod_{i=1}^{+\infty}H^q(M_i)$$ e $$H_c^q(M)=\oplus_{i=1}^{+\infty}H_c^q(M_i)$$
+
+A questo punto prendendo il duale di $H_c^q(M)$ si ha che $$(H_c^q(M))^*=\prod_{i=1}^{+\infty}H_c^q(M_i)$$ e quindi $H^q(M)\simeq(H_c^{n-q}(M))^*$, ma il duale di $H^q(M)$ non è la somma diretta degli $H^q(M_i)$, quindi il discorso opposto non si può sempre fare.
+
+\begin{cor1}
+    Siano $n$ un intero e $M$ una varietà connessa orientata di dimensione $n$, allora $H_c^n(M)\simeq\mathbb{R}$, inoltre se $M$ è anche compatta allora $H^n(M)\simeq\mathbb{R}$.
+\end{cor1}
+
+\section{La formula di Künneth}
+L'obiettivo di questa sezione sarà quello di dimostrare la formula di Künneth, ovvero l'equazione
+\begin{equation}
+    H^*(M\times F)=H^*(M)\otimes H^*(F)
+\end{equation}
+che permette di calcolare la coomologia di un prodotto di due varietà $M$ e $F$.
+
+Nella (2.7) si intende che $$H^n(M\times F)=\bigoplus_{p+q=n}\Big(H^p(M)\otimes H^q(F)\Big)$$
+
+Per questa dimostrazione è necessario che $M$ abbia un good cover finito. Si considerino le proiezioni
+\begin{center}
+\begin{tikzcd}
+    M\times F \arrow[r, "\rho"] \arrow[d, "\pi"]
+    & F \\
+    M
+\end{tikzcd}
+\end{center}
+La mappa $\omega\otimes\phi\mapsto\pi^*\omega\wedge\rho^*\phi$ induce in coomologia la mappa $$\psi:H^*(M)\otimes H^*(F)\rightarrow H^*(M\times F)$$
+
+Si cercherà di mostrare che $\psi$ è un isomorfismo. Si considerino $U$ e $V$ sottoinsiemi aperti di $M$, allora per la sequenza di Mayer-Vietoris si ha una sequenza esatta lunga
+\begin{center}
+\begin{tikzcd}
+    \ldots \arrow[r]
+    & H^p(U\cup V) \arrow[r]
+    & H^p(U)\oplus H^p(V) \arrow[r]
+    & H^p(U\cap V) \arrow[r]
+    & \ldots
+\end{tikzcd}
+\end{center}
+
+Moltiplicando tensorialmente per $H^{n-p}(F)$ si ottiene
+\begin{center}
+\begin{tikzcd}
+    \ldots \arrow[r]
+    & H^p(U\cup V)\otimes H^{n-p}(F) \arrow[r]
+    & \big(H^p(U)\otimes H^{n-p}(F)\big)\oplus\big(H^p(V)\otimes H^{n-p}(F)\big) \arrow[dl]\\
+    & H^p(U\cap V)\otimes H^{n-p}(F)
+    \arrow[r]
+    & H^{p+1}(U\cup V)\otimes H^{n-p}(F) \arrow[r]
+    &\ldots
+\end{tikzcd}
+\end{center}
+
+Inoltre sommando sui $p$
+\begin{center}
+\begin{tikzcd}
+    \ldots \arrow[r]
+    & \bigoplus_{p=0}^nH^p(U\cup V)\otimes H^{n-p}(F) \\
+    \arrow[r]
+    & \bigoplus_{p=0}^n\bigg(\big(H^p(U)\otimes H^{n-p}(F)\big)\oplus\big(H^p(V)\otimes H^{n-p}(F)\big)\bigg) \\
+    \arrow[r]
+    & \bigoplus_{p=0}^nH^p(U\cap V)\otimes H^{n-p}(F) \\
+    \arrow[r]
+    & \bigoplus_{p=0}^nH^{p+1}(U\cup V)\otimes H^{n-p}(F) \arrow[r]
+    &\ldots
+\end{tikzcd}
+\end{center}
+
+Queste ultime due sequenze sono ancora esatte perchè il prodotto tensoriale per uno spazio vettoriale e la somma diretta di catene esatte preservano l'esattezza. Dunque il seguente diagramma è commutativo
+\begin{center}
+\begin{tikzcd}
+    [cramped, sep=small]
+    \ldots \arrow[dd]
+    & \ldots \arrow[dd] \\
+    & \\
+    \bigoplus_{p=0}^nH^p(U\cup V)\otimes H^{n-p}(F) \arrow[dd] \arrow[r,"\psi"]
+    & H^n((U\cup V)\times F) \arrow[dd] \\
+    & \\
+    \bigoplus_{p=0}^n\bigg(\big(H^p(U)\otimes H^{n-p}(F)\big)\oplus\big(H^p(V)\otimes H^{n-p}(F)\big)\bigg) \arrow[dd] \arrow[r,"\psi"]
+    & H^n(U\times F)\oplus H^n(V\times F) \arrow[dd] \\
+    & \\
+    \bigoplus_{p=0}^nH^p(U\cap V)\otimes H^{n-p}(F) \arrow[r, "\psi"] \arrow[dd]
+    & H^n((U\cap V)\times F) \arrow[dd] \\
+    & \\
+    \ldots
+    & \ldots
+\end{tikzcd}
+\end{center}
+
+La commutatività è chiara tranne nel quadrato
+\begin{center}
+\begin{tikzcd}
+    \bigoplus H^p(U\cap V)\otimes H^{n-p}(F) \arrow[r, "\psi"] \arrow[d, "d^*"]
+    & H^n((U\cap V)\times F) \arrow[d, "d^*"] \\
+    \bigoplus H^{p+1}(U\cup V)\otimes H^{n-p}(F) \arrow[r, "\psi"]
+    & H^n((U\cup V)\times F)
+\end{tikzcd}
+\end{center}
+
+Sia $\omega\otimes\phi\in H^p(U\cap V)\otimes H^{n-p}(F)$, allora si ha che 
+\begin{align*}
+    d^*\psi(\omega\otimes\phi)&=d^*(\pi^*\omega\wedge\rho^*\phi)=d((\pi^*p_U)\pi^*\omega\wedge\rho^*\phi) \quad \text{essendo $\phi$ chiusa} \\
+    &=(d\pi^*(p_U\omega))\wedge\rho^*\phi=\pi^*(d^*\omega)\wedge\rho^*\phi \\
+    &=\psi d^*(\omega\otimes\phi)
+\end{align*}
+
+Quindi il diagramma è commutativo. Considerando ora che se $M$ è diffeomorfa a $\mathbb{R}^n$ la formula di Künneth coincide con il lemma di Poincarè, si può applicare un metodo induttivo tramite l'argomento di Mayer-Vietoris.
+
+Si è quindi dimostrato:
+\begin{teo1}[Formula di Künneth]
+    Siano $M$ e $F$ due varietà, $M$ con un good cover finito, allora $$H^*(M\times F)=H^*(M)\otimes H^*(F)$$.
+\end{teo1}
+
+\begin{cor1}[Teorema di Leray-Hirsch]
+    Sia $M$ una varietà con un good cover finito, sia $E$ un fibrato su $M$ con fibra $F$, se ci sono classi di coomologia globali su $E$ $e_1,\ldots,e_r$ che ristrette ad ogni fibra generano la coomologia della fibra allora $$H^*(E)\simeq H^*(M)\otimes\mathbb{R}\{e_1,\ldots,e_r\}\simeq H^*(M)\otimes H^*(F)$$
+\end{cor1}
+
+Esiste una versione della formula di Künneth anche per le forme a supporto compatto.
+
+\begin{teo1}
+    Siano $M$ e $N$ varietà con un good cover finito, allora $$H_c^*(M\times N)=H_c^*(M)\otimes H_c^*(N)$$
+\end{teo1}
+
+\section{Il duale di Poincarè}
+Sia $M$ una varietà orientata di dimensione $n$ e $S\subseteq M$ una sua sottovarietà orientata chiusa di dimensione $k$, dove con chiusa si intende come sottospazio di $M$. Sia $\omega$ una k-forma chiusa a supporto compatto su $M$. Poichè $S$ è chiuso in $M$, $Supp(\omega|_S)$ è chiuso sia in $M$ che in $S$, inoltre poichè $Supp(\omega|_S)\subseteq Supp\omega\cap S$ è un sottoinsieme chiuso di un compatto, allora $i^*\omega$ ha supporto compatto in $S$, con $i:S\rightarrow M$ inclusione, quindi l'integrale $\int\limits_Si^*\omega$ è ben definito. Dunque associando ad ogni forma $\omega\in H_c^k(M)$ il valore $\int\limits_Si^*\omega$ si sta selezionando una funzione di $(H_c^k(M))^*$, ma per la dualità di Poincarè $(H_c^k(M))^*\simeq H^{n-k}(M)$, quindi l'integrazione su $S$ corrisponde ad un unica classe di coomologia $[\eta_S]\in H^{n-k}(M)$, che è detta \textit{duale di Poincarè di $S$}.
+\begin{def1}[Duale di Poincarè]
+    Siano $n$ e $k$ interi, siano $M$ una varietà orientata di dimensione $n$ e $S$ una sua sottovarietà orientata chiusa di dimensione $k$, allora si dice duale di Poincarè di $S$ l'unica classe $\eta_S\in H^{n-k}(M)$ tale che $\forall\omega\in H_c^k(M)$
+    \begin{equation}
+        \int\limits_Si^*\omega=\int\limits_M\omega\wedge\eta_S
+    \end{equation}
+\end{def1}
+
+Spesso si usa il titolo di duale di Poincarè sia per indicare la classe $[\eta_S]$ sia per la forma $\eta_S$ che la rappresenta.
+
+Si consideri ora $S$ come una sottovarietà compatta orientata di $M$ ed $M$ con un good cover finito, in questo caso l'integrazione su $S$ è ben definita non solo sulle k-forme a supporto compatto ma su qualsiasi k-forma, quindi l'integrazione lungo $S$ definisce un funzionale lineare su $H^k(M)$ e quindi corrisponde ad un unica classe di coomologia $[\eta_S']\in H_c^{n-k}(M)$, detto \textit{duale di Poincare compatto di $S$}. Poichè un sottoinsieme compatto di un insieme Hausdorff è chiuso, $S$ è anche chiusa, dunque è valida anche la precedente definizione del duale di Poincarè, che in questo caso viene detto \textit{duale di Poincarè chiuso di $S$} per evitare fraintendimenti.
+\begin{def1}[Duale di Poincarè compatto]
+    Siano $n$ e $k$ interi, siano $M$ una varietà orientata di dimensione $n$ con un good cover finito e $S$ una sua sottovarietà orientata compatta di dimensione $k$, allora si dice duale di Poincarè compatto di $S$ l'unica classe $\eta_S'\in H_c^{n-k}(M)$ tale che $\forall\omega\in H^k(M)$
+    \begin{equation}
+        \int\limits_Si^*\omega=\int\limits_M\omega\wedge\eta_S'
+    \end{equation}
+\end{def1}
+
+Se l'equazione (2.9) vale per ogni k-forma chiusa su $M$, allora sicuramente vale per ogni k-forma chiusa a supporto compatto su $M$, quindi banalmente se $S$ è compatta il suo duale di Poincarè compatto è anche il suo duale di Poincarè chiuso, dunque si può richiedere che il duale di Poincarè chiuso di una sottovarietà orientata compatta abbia supporto compatto. In particolre se $W\subseteq M$ è un aperto di $M$ che contiene $S$, allora il duale di Poincarè compatto di $S$ in $W$ $\eta'_{S,W}\in H_c^{n-k}(W)$ si estende tramite 0 in una forma $\eta'_S\in H_c^{n-k}(M)$ che è chiaramente il duale di Poincarè compatto di $S$ in $M$ perchè $$\int\limits_Si^*\omega=\int\limits_W\omega\wedge\eta'_{S,W}=\int\limits_M\omega\wedge\eta_S'$$
+
+Ciò significa che:
+\begin{teo1}[Principio di localizzazione]
+    Siano $n$ e $k$ interi, siano $M$ una varietà orientata di dimensione $n$ con un good cover finito e $S$ una sua sottovarietà orientata compatta di dimensione $k$, allora il supporto del duale di Poincarè compatto di $S$ in $M$ può essere ridotto all'interno di ogni intorno aperto di $S$.
+\end{teo1}
+
+Questo vale in realtà anche per sottovarietà orientate chiuse ma si potrà dimostrare solo successivamente.
+
+I due tipi di duale di Poincarè definiti corrispondono a due differenti teorie omologiche, ovvero l'omologia chiusa e l'omologia compatta. L'omologia chiusa è ormai caduta in disuso, mentre l'omologia compatta è attualmente conosciuta come \textit{omologia delle catene singolari}.
+
+\chapter{La classe di Thom}
+In questo capitolo si parlerà di fibrati vettoriali e coomologia a supporto compatto al fine di poter definire l'isomorfismo di Thom e di conseguenza l'omonima classe, per poi concludere definendo la classe di Eulero e discutendo il caso non orientabile.
+\section{Fibrati vettoriali}
+\begin{def1}[Fibrato vettoriale]
+    Siano $n$ un intero e $\pi:E\rightarrow M$ una suriezione tra varietà la cui fibra $\pi^{-1}(x)$ è uno spazio vettoriale $\forall x\in M$. $\pi$ si dice fibrato vettoriale reale $C^{\infty}$ di rango $n$ se esiste un ricoprimento aperto $\{U_{\alpha}\}_{\alpha\in I}$ di $M$ e dei diffeomorfismi che preservano le fibre $\phi_{\alpha}:E|_{U_{\alpha}}=\pi^{-1}(U_{\alpha})\rightarrow U_{\alpha}\times\mathbb{R}^n$ che sono degli isomorfismi lineari su ogni fibra.
+\end{def1}
+
+Le mappe di transizione $\phi_{\alpha}\phi_{\beta}^{-1}:(U_{\alpha}\cap U_{\beta})\times\mathbb{R}^n\rightarrow(U_{\alpha}\cap U_{\beta})\times\mathbb{R}^n$ sono automorfismi di $\mathbb{R}^n$ in ogni fibra e danno luogo ad applicazioni $g_{\alpha\beta}:U_{\alpha}\cap U_{\beta}\rightarrow GL(n,\mathbb{R})$, con $g_{\alpha\beta}(x)=\phi_{\alpha}\phi_{\beta}^{-1}|_{\{x\}\times\mathbb{R}^n}$.
+
+In sostanza un fibrato vettoriale di rango $n$ è un fibrato con fibra $\mathbb{R}^n$ e gruppo di struttura $GL(n,\mathbb{R})$.
+
+\begin{def1}[Sezione di un fibrato vettoriale]
+    Siano $\pi:E\rightarrow M$ un fibrato vettoriale e $U$ un insieme aperto in $M$. Una mappa $s:U\rightarrow E$ si dice sezione del fibrato vettoriale $E$ su $U$ se $\pi\circ s=1_U$.
+\end{def1}
+
+\begin{oss1}
+    Ogni fibrato vettoriale ha una sezione zero globale ben definita.
+\end{oss1}
+
+\begin{def1}[Frame]
+    Siano $n$ un intero e $\pi:E\rightarrow M$ un fibrato vettoriale di rango $n$, siano $U$ un insieme aperto in $M$ e $s_1,\ldots,s_n$ delle sezioni di $\pi$ su $U$, allora la collezione $s_1,\ldots,s_n$ si dice frame su $U$ se $\forall x\in U$ $s_1(x),\ldots,s_n(x)$ formano una base di $E_x=\pi^{-1}(x)$.
+\end{def1}
+
+Le funzioni di transizione di un fibrato vettoriale $\{g_{\alpha\beta}\}$ soddisfano la condizione di cociclo $$g_{\alpha\beta}\circ g_{\beta\gamma}=g_{\alpha\gamma}$$ su $U_{\alpha}\cap U_{\beta}\cap U_{\gamma}$. Però è anche vero che il cociclo dipende dalla banalizzazione scelta.
+
+\begin{lem1}
+    Se due cocicli $\{g_{\alpha\beta}\}$ e $\{g'_{\alpha\beta}\}$ derivano da due banalizzazioni diverse $\{\phi_{\alpha}\}$ e $\{\phi'_{\alpha}\}$ allora esistono delle mappe $\lambda_{\alpha}:U_{\alpha}\rightarrow GL(n,\mathbb{R})$ tali che $g_{\alpha\beta}=\lambda_{\alpha}\cdot g'_{\alpha\beta}\cdot\lambda_{\beta^{-1}}$.
+\end{lem1}
+
+Due cocicli correlati in questo modo si dicono essere \textit{equivalenti}.
+
+Dato un fibrato vettoriale $E$ con gruppo di struttura $G$ e cociclo $\{g_{\alpha\beta}\}$, se è possibile trovare un cociclo equivalente $\{g'_{\alpha\beta}\}$ che prende valori in un sottogruppo $H$ di $GL(n,\mathbb{R})$ si dice che il gruppo di struttura di $E$ può essere ridotto ad $H$. Un fibrato vettoriale si dice \textit{orientabile} se il suo gruppo di struttura può essere ridotto a $GL^+(n,\mathbb{R})$.
+
+Una banalizzazione $\{(U_{\alpha},\phi_{\alpha})\}_{\alpha\in I}$ su un fibrato vettoriale $E$ si dice \textit{orientata} se $\forall\alpha,\beta\in I$ $g_{\alpha\beta}$ ha determinante positivo. Due banalizzazioni orientate $\{(U_{\alpha},\phi_{\alpha})\}_{\alpha\in I}$ e $\{(V_{\beta},\psi_{beta})\}_{\beta\in J}$ si dicono \textit{equivalenti} se $\forall x\in U_{\alpha}\cap V_{\beta}$, $\phi_{\alpha}\circ\psi_{\beta}^{-1}(x):\mathbb{R}^n\rightarrow\mathbb{R}^n$ ha determinante positivo. Essere banalizzazioni equivalenti è una relazione d'equivalenza e divide l'insieme di tutte le banalizzazioni orientate in due classi di equivalenza, ognuna delle quali si dice \textit{orientazione} di $E$.
+
+\begin{def1}[Fibrato tangente]
+    Sia $M$ una varietà, si definisce fibrato tangente $T_M$ di $M$ il fibrato vettoriale ottenuto attaccando ad ogni punto $x\in M$ lo spazio tangente $T_xM$ ad $M$ in $x$, ovvero $$T_M=\bigcup_{x\in M}T_xM$$
+\end{def1}
+
+\begin{prop1}
+    Sia $M$ una varietà, allora $M$ è orientabile se e solo se lo è il suo fibrato tangente $T_xM$.
+\end{prop1}
+
+\begin{prop1}
+    Il gruppo di struttura di un fibrato vettoriale può essere sempre ridotto a $O(n)$, inoltre può essere ridotto a $SO(n)$ se e solo se il fibrato vettoriale è orientabile.
+\end{prop1}
+\begin{def1}[Fibrato vettoriale banale]
+    Sia $n$ un intero, un fibrato vettoriale di rango $n$ $E$ creato su una varietà $M$ si dice banale se $E=M\times\mathbb{R}^n$.
+\end{def1}
+
+Da ora in poi lo scopo di questa sezione sarà dimostrare la banalità dei fibrati vettoriali creati su varietà contraibili, strumento essenziale per poter dimostrare che l'isomorfismo di Thom è appunto un isomorfismo, ma per ottenere questo risultato è necessario prima definire delle operazioni sui fibrati vettoriali.
+
+Sui fibrati vettoriali infatti si possono definire le solite operazioni funtoriali degli spazi vettoriali, ad esempio se $E$ ed $E'$ sono due fibrati vettoriali di rango $n$ e $m$ creati su una varietà $M$ si può definire la loro somma diretta $E\oplus E'$ come il fibrato vettoriale tale che $\forall x\in M$ ha come fibra $E_x\oplus E'_x$, quindi se $\{\phi_{\alpha}\}$ e $\{\phi'_{\alpha}\}$ sono banalizzazioni per $E$ ed $E'$ esse indurranno su $E\oplus E'$ una banalizzazione $$\phi_{\alpha}\oplus\phi'_{\alpha}:E\oplus E'|_{U_{\alpha}}\rightarrow U_{\alpha}\times(\mathbb{R}^n\oplus\mathbb{R}^m)$$ con matrici di transizione
+$$\begin{pmatrix}
+    g_{\alpha\beta} & 0 \\
+    0 & g'_{\alpha\beta}
+\end{pmatrix}$$
+
+Analogamente si possono definire $E\otimes E'$, $E^*$ e $Hom(E,E')$.
+
+\begin{oss1}
+    Si noti che $Hom(E,E')\simeq E^*\otimes E'$.
+\end{oss1}
+
+$E\otimes E'$ ha matrici di transizione $g_{\alpha\beta}\otimes g'_{\alpha\beta}$, mentre $E^*$ ha funzioni di transizione $(g_{\alpha\beta}^t)^{-1}$, con $g_{\alpha\beta}^t$ la mappa rappresentata dalla matrice trasposta alla matrice di $g_{\alpha\beta}$.
+
+\begin{def1}[Fibrato vettoriale di pullback]
+    Siano $M$ e $N$ varietà, siano $f:N\rightarrow N$ una funzione e $\pi:E\rightarrow M$ un fibrato vettoriale su $M$, allora si dice fibrato vettoriale di pullback di $E$ tramite $f$ il vfibrato vettoriale $f^{-1}E$ su $N$ definito da $f^{-1}E=\{(n,e)|f(n)=\pi(e)\}$
+\end{def1}
+
+Il fibrato vettoriale di pullback è l'unico sottoinsieme minimale di $N\times E$ che fa commutare il diagramma
+\begin{center}
+\begin{tikzcd}
+    f^{-1}E \arrow[r] \arrow[d]
+    & E \arrow[d, "\pi"] \\
+    N \arrow[r, "f"]
+    & M
+\end{tikzcd}
+\end{center}
+
+Si può dire che $\forall y\in N$, $f^{-1}E|_y$ è isomorfo a $E|_{f(y)}$ e che $f^{-1}E$ è localmente banale, inoltre se c'è una composizione
+\begin{center}
+\begin{tikzcd}
+    M'' \arrow[r, "g"]
+    & M' \arrow[r, "f"]
+    & M
+\end{tikzcd}
+\end{center}
+
+allora si ha che $$(f\circ g)^{-1}E\simeq g^{-1}(f^{-1}E)$$
+
+Se $\{U_{\alpha}\}$ è un ricoprimento aperto di $M$ che banalizza $E$ con funzioni di transizione $g_{\alpha\beta}$, allora $\{f^{-1}(U_{\alpha})\}$ è un ricoprimento aperto di $N$ che banalizza $f^{-1}E$ con funzioni di transizione $f^*g_{\alpha\beta}$, inoltre $f^{-1}E|_{f^{-1}(U_{\alpha})}\simeq f^{-1}(E|_{U_{\alpha}})$.
+
+Considerando $Vect_k(M)$ come l'insieme delle classi di equivalenza dei fibrati vettoriali di rango $k$ su $M$, si può associare ad una funzione $f$ tra varietà la funzione di pullback tra fibrati vettoriali $Vect_k(f)=f^{-1}$, rendendo così $Vect_k$ un funtore dalla categoria delle varietà con le mappe lisce alla categoria degli insiemi puntati con le funzioni che preservano il punto base. In $Vect_k(M)$ si considera come punto base la classe di equivalenza del fibrato vettoriale banale su $M$.
+\medskip
+
+Si può dimostrare che:
+\begin{prop1}[Proprietà di omotopia dei fibrati vettoriali]
+    Siano $X$ e $Y$ varietà con $Y$ compatta, siano $f_0$ e $f_1$ due funzioni omotope da $Y$ a $X$, sia $E$ un fibrato vettoriale su $X$, allora $f_0^{-1}E\simeq f_1^{-1}E$, ovvero mappe omotope inducono isomorfismi nei fibrati vettoriali di pullback.
+\end{prop1}
+
+Questa proposzione in realtà vale per ogni spazio paracompatto e visto che ogni varietà è paracompatta in realtà la richiesta che $Y$ sia compatto è superflua. Si ricorda che uno spazio è paracompatto se ogni suo ricoprimento aperto $\mathfrak{U}$ ha un raffinamento $\mathfrak{U}'$ localmente finito.
+
+\begin{cor1}
+    Ogni fibrato vettoriale costruito su una varietà contraibile è banale.
+    \begin{proof}
+        Sia $\pi:E\rightarrow M$ un fibrato vettoriale sulla varietà contraibile $M$, siano $f$ e $g$ le mappe
+        \begin{center}
+            \begin{tikzcd}
+                M \arrow[r, shift left, "f"]
+                & Punto \arrow[l, shift left, "g"]
+            \end{tikzcd}
+        \end{center}
+        tali che $g\circ f$ sia omotopa a $1_M$, allora per la proprietà di omotopia dei fibrati vettoriali $$E\simeq (g\circ f)^{-1}E\simeq f^{-1}(g^{-1}E)$$
+        Poichè $g^{-1}E$ è un fibrato vettoriale su un punto è anche banale, quindi il suo fibrato vettoriale di pullback tramite $f$ deve essere banale.
+    \end{proof}
+\end{cor1}
+
+\begin{lem1}
+    Un fibrato vettoriale orientabile su una varietà orientabile è una varietà orientabile.
+\end{lem1}
+
+Sia $E$ un fibrato vettoriale di rango $n$ su una varietà $M$, allora la sezione zero $s:x\mapsto (x,0)$ incorpora in modo diffeomorfo $M$ all'interno di $E$, e quindi poichè $M\times \{0\}$ è un retratto per deformazione di $E$ si ha che
+\begin{equation}
+    H^*(E)\simeq H^*(M)
+\end{equation}
+
+In modo analogo si può pensare che
+\begin{equation}
+    H_c^*(E)\simeq H_c^{*-n}(M)
+\end{equation}
+
+ma per ottenere ciò è necessaria qualche ipotesi aggiuntiva, infatti è richiesto che $M$ sia orientabile. A quel punto si può dire che, se $m$ è la dimensione di $M$
+\begin{align*}
+    H_c^*(E)&\simeq (H^{m+n-*}(E))^* \quad \text{per la dualità di Poincarè su $E$} \\
+    &\simeq (H^{m+n-*}(M))^* \quad \text{per l'assioma di omotopia della coomologia di De Rham} \\
+    &\simeq  H_c^{n-*}(M) \quad \text{per la dualità di Poincarè su $M$}
+\end{align*}
+
+così è dimostrata la (3.2) per $M$ orientabile.
+
+Inoltre se si dota la varietà orientata $M$ di un atlante orientato $\{(U_{\alpha},\psi_{\alpha})\}$ e il fibrato vettoriale orientato $E$ su $M$ di un'orientazione $\{(U_{\alpha},\phi_{\alpha})\}$, allora $E$ può essere visto come una varietà orientata con atlante orientato $$\{(\pi^{-1}(U_{\alpha}),(\psi_{\alpha}\times1)\circ\phi_{\alpha}:\pi^{-1}(U_{\alpha})\rightarrow U_{\alpha}\times\mathbb{R}^n\rightarrow\mathbb{R}^m\times\mathbb{R}^n)\}$$
+
+Questa si dice \textit{orientazione locale del prodotto} su $E$.
+
+\section{Coomologia a supporto compatto lungo la componente verticale}
+Nei fibrati vettoriali, oltre ai due tipi di coomologia già definiti ne esiste anche un terzo, ovvero la coomologia a supporto compatto lungo la componente verticale. Per ottenere questa nuova invariante per diffeomorfismi si considera il \textit{complesso delle forme a supporto compatto lungo la componente verticale} $\Omega_{cv}^*(E)$, per un qualsiasi fibrato vettoriale $E$, ovvero l'insieme delle forme differenziali su $E$ che ristrette ad ogni fibra hanno supporto compatto. La coomologia di questo complesso, denotata $H_{cv}^*(E)$, si dice \textit{coomologia a supporto compatto lungo la componente verticale} di $E$, o più semplicemente \textit{coomologia compatta verticale} di $E$.
+
+Quello che si cercherà di dimostrare è che
+\begin{equation}
+    H_{cv}^*(E)\simeq H^{*-n}(M)
+\end{equation}
+tramite quello che viene detto \textit{isomorfismo di Thom}, che è come una terza versione dei lemmi di Poincarè dedicata alla coomologia compatta verticale dei fibrati vettoriali. A questo proposito si vuole definire un funzionale lineare detto \textit{integrazione lungo le fibre} che permetterà la definizione dell'isomorfismo di Thom.
+
+Sia $E$ un fibrato vettoriale orientato di dimensione $n$ sulla varietà $M$. Si consideri prima il caso banale con $E=M\times\mathbb{R}^n$, siano $t_1,\ldots,t_n$ le coordinate sulle fibre, allora ogni sua forma forma differenziale a supporto compatto lungo la componente verticale può essere di due tipi:
+\begin{enumerate}
+    \item $\pi^*(\phi)f(x,t_1,\ldots,t_n)dt_{i_1}\ldots dt_{i_r}$ con $r<n$ \\
+    \item $\pi^*(\phi)f(x,t_1,\ldots,t_n)dt_1\ldots dt_n$
+\end{enumerate}
+con $f$ funzione a supporto compatto lungo la componente verticale di $E$ e $\phi$ forma su $M$. La mappa di integrazione lungo le fibre $\pi_*$ si definisce:
+\begin{enumerate}
+    \item $\pi^*(\phi)f(x,t_1,\ldots,t_n)dt_{i_1}\ldots dt_{i_r}\mapsto0$ \\
+    \item $\pi^*(\phi)f(x,t_1,\ldots,t_n)dt_1\ldots dt_n\mapsto\phi\int\limits_{\mathbb{R}^n}f(x,t_1\ldots t_n)dt_1,\ldots,dt_n$
+\end{enumerate}
+
+Sia ora $E$ un fibrato vettoriale qualsiasi con banalizzazione orientata $\{(U_{\alpha},\phi_{\alpha})\}$, siano $x_1,\ldots,x_m$ e $y_1,\ldots,y_m$ le coordinate su $U_{\alpha}$ e $U_{\beta}$, siano $t_1,\ldots,t_n$ e $u_1,\ldots,u_n$ le coordinate sulle fibre di $E|_{U_{\alpha}}$ $E|_{U_{\beta}}$, allora una forma $\omega$ del secondo tipo, scrivendo $\omega_{\alpha}$ per indicare $\omega|_{\pi^{-1}U_{\alpha}}$, si scrive su $U_{\alpha}$ e $U_{\beta}$ come
+\begin{align*}
+    \omega_{\alpha}=\pi^*(\phi)f(x_1,\ldots,x_m,t_1,\ldots,t_n)dt_1\ldots dt_n \\
+    \omega_{\beta}=\pi^*(\tau)g(y_1,\ldots,y_m,u_1,\ldots,u_n)du_1\ldots du_n
+\end{align*}
+
+A questo punto la mappa di integrazione lungo le fibre $\pi_*$ si definisce:
+\begin{enumerate}
+    \item $\pi^*(\phi)f(x_1,\ldots,x_m,t_1,\ldots,t_n)dt_{i_1}\ldots dt_{i_r}\mapsto0$ \\
+    \item $\omega_{\alpha}\mapsto\phi\int\limits_{\mathbb{R}^n}f(x_1,\ldots,x_m,t_1,\ldots,t_n)dt_1\ldots dt_n$
+\end{enumerate}
+
+Si mostra che nelle intersezioni $U_{\alpha}\cap U_{\beta}$  si ha $\pi_*\omega_{\alpha}=\pi_*\omega_{\beta}$ così che i vari $\{\pi_*\omega_{\alpha}\}$ si incollano per andare a creare una forma globale $\pi_*\omega$ su $M$.
+
+La definizione dell'integrazione lungo le fibre si mostra essere indipentente dalla scelta dell'atlante banalizzante orientato di $E$.
+
+\begin{prop1}
+    $\pi_*$ commuta con $d$.
+    \begin{proof}
+        Siano $\{(U_{\alpha},\phi_{\alpha})\}$ una banalizzazione per $E$ e $\{p_{\alpha}\}$ una partizione dell'unità subordinata a $\{U_{\alpha}\}$. Sia $\omega\in\Omega_{cv}^*(E)$, allora $\omega=\sum p_{\alpha}\omega$, ma poichè sia $\pi_*$ che $d$ sono lineari basta mostrare la tesi solo per i vari $p_{\alpha}\omega$, quindi, equivalentemente, possiamo supporre che $E$ sia il fibrato vettoriale banale $M\times\mathbb{R}^n$.
+
+        Sia $\omega=\pi^*\phi f(x,t)dt_{i_1}\ldots dt_{i_r}$ una forma del primo tipo, allora
+        \begin{align*}
+            d\pi_*\omega&=0 \\
+            \pi_*\omega&=(-1)^{deg\phi}\sum_i\pi_*((\pi^*\phi)\frac{\partial f}{\partial t_i}(x,t)dt_idt_{i_1}\ldots dt_{i_r})
+        \end{align*}
+
+        Questo calcolo si divide ora in due casi:
+        \begin{enumerate}
+            \item Se $dt_idt_{i_1}\ldots dt_{i_r}\neq\pm dt_1,\ldots,dt_n$ allora $\pi_*\omega=0$ \\
+            \item Se $dt_idt_{i_1}\ldots dt_{i_r}=\pm dt_1,\ldots,dt_n$ allora
+            \begin{align*}
+                \pi_*\omega&=(-1)^{deg\phi}\sum_i\phi\int\limits_{\mathbb{R}^{n-1}}\Big(\int\limits_{-\infty}^{+\infty}\frac{\partial f}{\partial t_i}(x,t)dt_i\Big)dt_{i_1}\ldots dt_{i_r}) \\
+                &=(-1)^{deg\phi}\sum_i\phi\int\limits_{\mathbb{R}^{n-1}}\Big(f(\ldots,+\infty,\ldots)-f(\ldots,-\infty,\ldots)\Big)dt_{i_1}\ldots dt_{i_r}) \\
+                &=0 \quad \text{poichè $f$ ha supporto compatto lungo la componente verticale}
+            \end{align*}
+        \end{enumerate}
+
+        Sia $\omega=\pi^*\phi f(x,t)dt_1\ldots dt_n$ invece una forma del secondo tipo, allora
+        \begin{align*}
+            d\pi_*\omega&=d\Big(\phi\int f(x,t)dt_1,\ldots,dt_n\Big) \\
+            &=(d\phi)\int f(x,t)dt_1,\ldots,dt_n+(-1)^{deg\phi}\phi\sum_idx_i\int\frac{\partial f}{\partial x_i}(x,t)dt_1\ldots dt_n \\
+            \pi_*d\omega&=\pi_*((\pi^*d\phi)fdt_1\ldots dt_n+(-1)^{deg\phi}\pi^*\phi\sum_i\int\frac{\partial f}{\partial x_i}(x,t)dx_idt_1\ldots dt_n \\
+            &=(d\phi)\int f(x,t)dt_1,\ldots,dt_n+(-1)^{deg\phi}\sum_i\phi dx_i\int\frac{\partial f}{\partial x_i}(x,t)dt_1\ldots dt_n
+        \end{align*}
+        
+        Quindi in entrambi i casi si ha $$d\pi_*\omega=\pi_*d\omega$$
+    \end{proof}
+\end{prop1}
+
+\begin{prop1}[Formule di proiezione]
+    \begin{enumerate}
+        \item Siano $\pi:E\rightarrow M$ un fibrato vettoriale orientato di rango $n$, $\tau$ una forma su $M$ e $\omega$ una forma su $E$ con supporto compatto lungo la componente verticale, allora $\pi_*((\pi^*\tau)\cdot\omega)=\tau\cdot\pi_*\omega$. \\
+        \item Si aggiunga alle ipotesi che $M$ è orientata di dimensione $m$, che $\omega\in\Omega_{cv}^q(E)$ e che $\tau\in\Omega_c^{n+m-q}(M)$, allora utilizzando l'orientazione locale del prodotto su $E$ $\int\limits_E(\pi^*\tau)\wedge\omega=\int\limits_M\tau\wedge\pi_*\omega$.
+    \end{enumerate}
+    \begin{proof}
+        \begin{enumerate}
+        \item Poichè due forme coincidono se e solo se coincidono localmente, si può assumere che $E$ sia il fibrato vettoriale banale, se $\omega=\pi^*\phi f(x,t)dt_{i_1}\ldots dt_{i_r}$ è una forma del primo tipo $$\pi_*(\pi^*\tau\cdot\omega)=\pi_*(\pi^*(\tau\phi)f(x,t)dt_{i_1}\ldots dt_{i_r})=0=\tau\cdot\pi_*\omega$$
+
+        Se invece $\omega=\pi^*\phi f(x,t)dt_1\ldots dt_n$ è una forma del secondo tipo $$\pi_*(\pi^*\tau\cdot\omega)=\tau\phi\int\limits_{\mathbb{R}^n}f(x,t)dt_1\ldots dt_n=\tau\cdot\pi_*\omega$$ \\
+        \item Siano $\{(U_{\alpha},\phi_{\alpha})\}$ una banalizzazione di $E$ e $\{p_{\alpha}\}$ una partizione dell'unità subordinata a $\{U_{\alpha}\}$, si ha che $\omega=\sum p_{\alpha}\omega$ con $p_{\alpha}\omega$ a supporto in $U_{\alpha}$, quindi $$\int\limits_E(\pi^*\tau)\wedge\omega=\sum_{\alpha}\int\limits_{E|_{U_{\alpha}}}(\pi^*\tau)\wedge(p_{\alpha}\omega)$$ e $$\int\limits_M\tau\wedge\pi_*\omega=\sum_{\alpha}\int\limits_{U_{\alpha}}\tau\wedge\pi_*(p_{\alpha}\omega)$$
+
+        $\tau\wedge\pi_*(p_{\alpha}\omega)$ ha supporto compatto poichè il suo supporto è un sottoinsieme chiuso dell'insieme compatto $Supp\tau$, analogamente $(\pi^*\tau)\wedge(p_{\alpha}\omega)$ ha supporto compatto. Questo è abbastanza per dimostrare la tesi per $M=U_{\alpha}$ ed $E$ banale. Il resto della dimostrazione procede esattamente come nel primo punto.
+        \end{enumerate}
+    \end{proof}
+\end{prop1}
+
+\begin{teo1}[Lemma di Poincarè a supporto compatto lungo la componente verticale]
+    Sia $M$ una varietà di dimensione $n$, allora l'integrazione lungo le fibre definisce un isomorfismo in coomologia $$\pi_*:H_{cv}^*(M\times\mathbb{R}^n)\rightarrow H^{*-n}(M)$$
+    \begin{proof}
+        La dimostrazione è analoga passo per passo a quella fornita per la dimostrazione del lemma di Poincarè a supporto compatto.
+    \end{proof}
+\end{teo1}
+
+\section{La classe di Thom}
+
+Una generalizzazione di questa versione del lemma di Poincarè è l'isomorfismo di Thom.
+
+\begin{teo1}[Isomorfismo di Thom]
+    Sia $\pi:E\rightarrow M$ un fibrato vettoriale orientabile di rango $n$ su una varietà $M$ di tipo finito, allora $$H_{cv}^*(E)\simeq H^{*-n}(M)$$
+    \begin{proof}
+        Siano $U$ e $V$ sottoinsiemi aperti di $M$. Analogamente a come già visto in precedenza si ha che la sequenza corta
+        \begin{center}
+        \begin{tikzcd}
+            0 \arrow[r]
+            & \Omega_{cv}^*(E|_{U\cup V}) \arrow[r]
+            & \Omega_{cv}^*(E|_U)\oplus\Omega_{cv}^*(E|_V) \arrow[r]
+            & \Omega_{cv}^*(E|_{U\cap V}) \arrow[r]
+            & 0
+        \end{tikzcd}
+        \end{center}
+        è esatta. In questo modo si ottiene il seguente diagramma commutativo delle sequenza di Mayer-Vietoris
+        \begin{center}
+        \begin{tikzcd}
+            [cramped, sep=small]
+            \ldots \arrow[r]
+            & H_{cv}^*(E|_{U\cup V}) \arrow[r] \arrow[dd, "\pi_*"]
+            & H_{cv}^*(E|_U)\oplus H_{cv}^*(E|_V) \arrow[r] \arrow[dd, "\pi_*"]
+            & H_{cv}^*(E|_{U\cap V}) \arrow[r, "d^*"] \arrow[dd, "\pi_*"]
+            & H_{cv}^{*+1}(E|_{U\cup V}) \arrow[r] \arrow[dd, "\pi_*"]
+            & \ldots \\
+            &
+            &
+            &
+            &
+            & \\
+            \ldots \arrow[r]
+            & H^{*-n}(U\cup V) \arrow[r]
+            & H^{*-n}(U)\oplus H^{*-n}(V) \arrow[r]
+            & H^{*-n}(U\cap V) \arrow[r, "d^*" ']
+            & H^{*+1-n}(U\cup V) \arrow[r]
+            & \ldots
+        \end{tikzcd}
+        \end{center}
+        La commutatività è immediata eccetto per l'ultimo quadrato. Dalle formule di proiezione si ha che se $\omega\in H_{cv}^*(E|_{U\cap V})$ allora $$\pi_*d^*\omega=\pi_*((\pi^*dp_U)\cdot\omega)=(dp_U)\cdot\pi_*\omega=d^*\pi_*\omega$$
+
+        Dunque si ha la commutatività. Poichè $U$ è diffeomorfo ad $\mathbb{R}^n$, che è contraibile, $E|_U$ è banale, così in questo caso l'isomorfismo di Thom si riduce al lemma di Poincarè a supporto compatto lungo la componente verticale. In questo modo nel diagramma soprastante $\pi_*$ è un isomorfismo per tutti gli insiemi aperti contraibili dunque, essendolo per $U$, $V$ e $U\cap V$, per il lemma dei 5 allora lo è anche per $U\cup V$. Ora utilizzando l'argomento di Mayer-Vietoris per induzione sulla cardinalità di un good cover si ha la tesi.
+    \end{proof}
+\end{teo1}
+
+Anche se qua dimostrata solo per varietà di tipo finito, l'isomorfismo di Thom in realtà vale per qualsiasi varietà.
+
+L'appellativo di \textit{isomorfismo di Thom} viene attribuito anche all'inverso dell'isomorfismo $\pi_*$ presentato nel teorema, oltre che al teorema stesso. Tutto questo si rivela essere estremamente importante per quanto riguarda la coomologia dei fibrati vettoriali perchè l'immagine di $1\in H^0(M)$ tramite l'isomorfismo di Thom $T:H^*(M)\rightarrow H_{cv}^{n+*}(E)$ determina una classe di coomologia $\Phi$ in $H_{cv}^{n}(E)$ detta \textit{classe di Thom}. La classe di Thom è di grande importanza dal momento che $\pi_*\Phi=1$ e quindi per le formule di proiezione $$\pi_*(\pi^*\omega\wedge\Phi)=\omega\wedge\pi_*\Phi=\omega$$
+
+Questo significa che, essendo l'isomorfismo di Thom l'inverso di $\pi_*$ $$T(\quad)=\pi^*(\quad)\wedge\Phi$$
+
+\begin{prop1}
+    La classe di Thom $\Phi$ di un fibrato vettoriale $E$ orientato di rango $n$ può essere unicamente caratterizzata come la classe di coomologia in $H_{cv}^n(E)$ che si restringe in ogni fibra $F$ ad un generatore di $H_c^n(F)$.
+    \begin{proof}
+        Poichè $\pi_*\Phi=1$ si ha che $\Phi|_F$ ha integrale totale 1, quindi è un generatore. D'altra parte se $\Phi'\in H_{cv}^n(E)$ si restringe ad un generatore su ogni fibra, allora $\pi_*(\pi^*\omega\wedge\Phi')=\omega\wedge\pi_*\Phi'=\omega$, quindi $\pi^*(\quad)\wedge\Phi'$ deve essere l'isomorfismo di Thom $T$ e $T(1)=\Phi'$ deve essere la classe di Thom $\Phi$, quindi si ha l'unicità.
+    \end{proof}
+\end{prop1}
+
+\begin{prop1}
+    Siano $E$ ed $F$ due fibrati vettoriali orientati su una varietà $M$, siano $\pi_1:E\oplus F\rightarrow E$ e $\pi_2:E\oplus F\rightarrow F$ le proiezioni sulle componenti, allora la classe di Thom di $E\oplus F$ è $\Phi(E\oplus F)=\pi_1^*\Phi(E)\wedge\pi_2^*\Phi(F)$.
+    \begin{proof}
+        Siano $n$ e $m$ il rango di $E$ ed $F$ rispettivamente. Dal momento che l'isomorfismo $H_c^{n+m}(\mathbb{R}^n\times\mathbb{R}^m)\simeq H_c^m(\mathbb{R}^m)\times H_c^n(\mathbb{R}^n)$ è dato dal prodotto dei generatori, si ha che $\pi_1^*\Phi(E)\wedge\pi_2^*\Phi(F)$ è una classe di coomologia in $H_{cv}^{n+m}(E)$ che ristretta ad ogni fibra è il generatore della coomologia a supporto compatto della fibra, quindi deve essere per forza la classe di Thom di $E\oplus F$.
+    \end{proof}
+\end{prop1}
+
+\subsection{Il duale di Poincarè e la classe di Thom}
+Tra il duale di Poincarè e la classe di Thom c'è un collegamento molto stretto. al punto di poterli considerare come due facce della stessa medaglia, ma prima di poter sancire questa cosa sono necessarie delle conoscenze preliminari per quanto riguarda gli intorni tubolari e i fibrati vettoriali normali.
+
+\begin{def1}[Intorno tubolare]
+    Siano $M$ una varietà orientata di ordine $n$ e $S$ una sua sottovarietà orientata di ordine $k$, allora si dice intorno tubolare di $S$ in $M$ un intorno aperto $T$ di $S$ in $M$ diffeomorfo ad un fibrato vettoriale su $S$ di rango $n-k$.
+\end{def1}
+
+Una sequenza
+\begin{center}
+\begin{tikzcd}
+    0 \arrow[r]
+    & E \arrow[r]
+    & E' \arrow[r]
+    & E'' \arrow[r]
+    & 0
+\end{tikzcd}
+\end{center}
+di fibrati vettoriali su una varietà $M$ si dice esatta se $\forall p\in M$ la sequenza di spazi vettoriali
+\begin{center}
+\begin{tikzcd}
+    0 \arrow[r]
+    & E_p \arrow[r]
+    & E'_p \arrow[r]
+    & E''_p \arrow[r]
+    & 0
+\end{tikzcd}
+\end{center}
+è esatta, dove $E_p$ è la fibra di $E$ nel punto $p$.
+\begin{def1}[Fibrato vettoriale normale]
+    Se $S$ è una sottovarietà di $M$, si dice fibrato vettoriale normale ad $S$ in $M$ il fibrato vettoriale $N=N_{S,M}$ su $S$ definito dalla sequenza esatta
+    \begin{center}
+    \begin{tikzcd}
+    0 \arrow[r]
+    & T_S \arrow[r]
+    & T_M|_S \arrow[r]
+    & N \arrow[r]
+    & 0
+    \end{tikzcd}
+    \end{center}
+    dove $T_M|_S$ è la restrizione del fibrato tangente a $M$ su $S$.
+\end{def1}
+
+Il \textit{teorema dell'intorno tubolare} dice che ogni sottovarietà $S$ di $M$ ha un intorno tubolare $T$ e che $T$ è inoltre diffeomorfo al fibrato $N$ normale a $S$ in $M$.
+
+In generale se $A$ e $B$ sono due fibrati vettoriali orientati su una stessa varietà con banalizzazioni orientate $\{(U_{\alpha},\phi_{\alpha})\}$ e $\{(U_{\alpha},\psi_{\alpha})\}$, allora si dice \textit{orientazione della somma diretta} su $A\oplus B$ l'orientazione data dalla banalizzazione orientata $\{(U_{\alpha},\phi_{\alpha}\oplus\psi_{\alpha})\}$. Ritornando a $S$ ed $M$, sia $j:T\rightarrow M$ l'inclusione in $M$ dell'intorno tubolare $T$ di $S$ in $M$. Dal momento che $S$ e $M$ sono orientabili lo sono anche $T_{M_S}$ e $T_S$, quiindi lo è anche $N_S$ in quanto per esattezza della sequenza è isomorfo al quoziente di $T_M|_S$ rispetto a $T_S$. A questo punto per convenzione $N_S$ è orientato in modo tale che $T_S\oplus N_S=T_M|_S$ abbia l'orientazione della somma diretta.
+
+Applicando l'isomorfismo di Thom al fibrato vettoriale normale $N=N_S$ su $S$ si ottiene la sequenza di mappe
+\begin{center}
+\begin{tikzcd}
+    H^*(S) \arrow[r, "\wedge\Phi"]
+    & H_{cv}^{*+n-k}(N) \arrow[r, "j^*"]
+    & H^{*+n-k}(M)
+\end{tikzcd}
+\end{center}
+
+dove $\Phi$ è la classe di Thom di $N$ e $j^*$ è l'estensione per 0. Si vuole mostrare che il duale di Poincarè di $S$ è la classe di Thom del suo fibrato normale, ovvero che
+\begin{equation}
+    \eta_S=j^*(\Phi\wedge1)=j^*\Phi
+\end{equation}
+in $H^{n-k}(M)$. Per dimostrarlo basta mostrare che $j^*\Phi$ soddisfa la condizione del duale di Poincarè, quindi sia $\omega\in H_c^k(M)$, siano $i:S\rightarrow N$ l'inclusione considerando $S$ come la sezione zero di $N$ e $\pi:N\rightarrow S$ la proiezione, allora poichè $\pi$ è una retrazione per deformazione di $N$ in $S$ $\pi^*$ e $i^*$ sono isomorfismi inversi in coomologia, dunque $\omega$ e $\pi^*(i^*\omega)$ stanno nella stessa classe e quindi $\omega=\pi^*(i^*\omega)+d\tau$. Allora si ha che
+\begin{align*}
+    \int\limits_M\omega\wedge j^*\Phi&= \\
+    &=\int\limits_N\omega\wedge\Phi \quad \text{perchè $j^*\Phi$ ha supporto in $N$} \\
+    &=\int\limits_N(\pi^*i^*\omega+d\tau)\wedge\Phi \\
+    &=\int\limits_N(\pi^*i^*\omega)\wedge\Phi \quad \text{poichè $\int\limits_N(d\tau)\wedge\Phi=\int\limits_Nd(\tau\wedge\Phi)=0$ per il teorema di Stokes} \\
+    &=\int\limits_Si^*\omega\wedge\pi_*\Phi \quad \text{per la formula di proiezione} \\
+    &=\int\limits_Si^*\omega
+\end{align*}
+
+Prendendo ora un qualsiasi fibrato vettoriale orientato $E$ su una varietà orientata $M$, poichè $M$ è diffeomorficamente incorporata in $E$ tramite la sezione zero, c'è la sequenza esatta corta
+\begin{center}
+\begin{tikzcd}
+    0 \arrow[r]
+    & T_M \arrow[r]
+    & T_E|_M \arrow[r]
+    & E \arrow[r]
+    & 0
+\end{tikzcd}
+\end{center}
+
+Quindi si evince che il fibrato vettoriale normale di $M$ in $E$ è $E$ stesso, dunque il duale di Poincarè di $M$ in $E$ coincide con la classe di Thom di $E$. Riassumendo:
+\begin{prop1}
+    \begin{enumerate}
+        \item Il duale di Poincarè di una sottovarietà chiusa orientata $S$ di una varietà orientata $M$ e la classe di Thom del fibrato vettoriale normale di $S$ possono essere rappresentati dalla stessa forma. \\
+        \item La classe di Thom di un fibrato vettoriale orientato $\pi:E\rightarrow M$ su una varietà orientata $M$ e il duale di Poincarè della sezione zero di $E$ possono essere rappresentati dalla stessa forma.
+    \end{enumerate}
+\end{prop1}
+
+Poichè il fibrato vettoriale normale di $S$ in $M$ è diffeomorfo ad ogni intorno tubolare di $S$, quindi si può estende il principio di localizzazione già citato in precedenza nel seguente modo:
+\begin{cor1}[Principio di localizzazione]
+    Il supporto del duale di Poincarè di una sotto varietà $S$ può essere ristretto all'interno di ogni intorno tubolare di $S$.
+\end{cor1}
+
+Sia ora $M$ una varietà con $R$ ed $S$ due sottovarietà, $R$ ed $S$ si dice che \textit{si intersecano trasversalmente} se e solo se $\forall x\in R\cap S$ si ha che $T_xR+T_xS=T_xM$. Si può dimostrare che in caso di intersezione trasversa $R\cap S$ è ancora una varietà e in tal caso la codimensione in $M$ è additiva, ovvero $codim(R\cap S)=codimR+codimS$ e questo implica che $$N_{R\cap S}=N_R\oplus N_S$$
+
+Nel caso in cui $M$ è orientata ed $R$ e $S$ sono chiuse e orientate a questo punto si ottiene $$\Phi(N_{R\cap S})=\Phi(N_R\oplus N_S)=\Phi(N_R)\wedge\Phi(N_S)$$
+
+quindi $$\eta_{R\cap S}=\eta_R\wedge\eta_S$$
+
+Ovvero l'intersezione trasversa di sottovarietà chiuse orientate corrisponde al prodotto wedge di forme sotto la dualita di Poincarè.
+
+Si può dimostrare come conseguenza del legame tra dualità di Poincarè e classe di Thom che sotto la dualità di Poincarè le mappe indotte in coomologia corrispondono alla preimmagine in geometria, ovvero che se $f:M'\rightarrow M$ è una mappa tra varietà orientate che preserva l'orientazione, $T$ è un intorno tubolare della sottovarietà chiusa orientata $S$ di $M$ e $f(M')$ è trasversale a $S$ e $T$, allora $$\eta_{f^{-1}(S)}=f^*\eta_S$$
+
+\section{La classe di Eulero}
+In questa ultima sezione si andrà a mostrare come si costruisce esplicitamente la classe di Thom di un generico fibrato vettoriale di rango 2.
+
+Questa costruzione si capisce più facilmente se vista come il fibrato vettoriale analogo al procedimento per associare un generatore di $H^{n-1}(S^{n-1})=H^{n-1}(\mathbb{R}^n\setminus\{0\})$ ad un generatore di $H_c^n(\mathbb{R}^n)$, quindi come prima cosa si analizzi la situazione su $\mathbb{R}^n$.
+
+Sia $\omega$ una n-forma su una varietà $M$ di dimensione $n$, allora $\omega$ si dice \textit{positiva} se è nella classe di orientazione di $M$. Per definire l'orientazione standard sulla sfera $S^{n-1}$ in $\mathbb{R}^n$ si prendono $\sigma$ generatore di $H^{n-1}(S^{n-1})$ e $\pi:\mathbb{R}^n\setminus\{0\}\rightarrow S^{n-1}$ proiezione, allora $\sigma$ si dice positiva su $S^{n-1}$ se e solo se $dr\cdot\pi^*\sigma$ è positiva su $\mathbb{R}^n\setminus\{0\}$.
+
+Siano ora $\sigma\in H^{n-1}(S^{n-1})$ il generatore positivo e $\psi=\pi^*\sigma$ il corrispondente generatore di $H^{n-1}(\mathbb{R}^n\setminus\{0\})$, allora $\psi$ si dice \textit{forma angolare su $\mathbb{R}^n\setminus\{0\}$}. Considerando $\rho(r)$ la funzione raggio mostrata nella Figura 3.1, allora $d\rho=\rho'(r)dr$, mostrata nella Figura 3.2 diventa una forma d'urto su $\mathbb{R}$ con integrale totale 1, quindi moltiplicando $d\rho\cdot\psi$ si ottiene una forma a supporto compatto su $\mathbb{R}^n$ con integrale totale 1, quindi un generatore di $H_c^n(\mathbb{R}^n)$. Si noti anche che dal momento che $\psi$ è chiusa $$d\rho\cdot\psi=d(\rho\psi)$$
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{immagine_tesi4.png}
+    \caption{$\rho(r)$}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{immagine_tesi5.png}
+    \caption{$\rho'(r)$}
+    \label{fig:enter-label}
+\end{figure}
+
+Si consideri ora un fibrato vettoriale orientato $E$ di rango 2 su una varietà $M$, e si denoti $E^0$ il complemento in $E$ della sezione zero. Come prima cosa si prenda la forma $\psi$ su $E^0$ che ristretta ad ogni fibra diventa la forma angolare su $\mathbb{R}^2\setminus\{0\}$, questa $\psi$ si dice \textit{forma angolare globale} su $E^0$. A questo punto si può intuire facilmente che $\Phi=d(\rho\psi)$ è la classe di Thom, poichè ristretta ad ogni fibra diventa un generatore di $H^2(\mathbb{R}^2\setminus\{0\})$. Si prendano ora $\{U_{\alpha}\}$ ricoprimento aperto di $M$ e un frame ortogonale su ogni $U_{\alpha}$, questo definisce sulle fibre di $E^0|_{U_{\alpha}}$ delle coordinate $r_{\alpha}$ e $\theta_{\alpha}$, inoltre se su $U_{\alpha}$ si hanno le coordinate $x_1,\ldots,x_n$, allora su $E^0|_{U_{\alpha}}$ si hanno in totale le coordinate $\pi^*x_1,\ldots,\pi^*x_n,r_{\alpha},\theta_{\alpha}$. Sulle intersezioni $U_{\alpha}\cap U_{\beta}$ si ha che i raggi $r_{\alpha}$ e $r_{\beta}$ sono uguali mentre le coordinate angolari $\theta_{\alpha}$ e $\theta_{\beta}$ possono differire di una rotazione. Grazie all'orientabilità su $E$ è possibile parlare di un senso antiorario e questo permette di definire delle funzioni angolari $\varphi_{\alpha\beta}$ di rotazione in direzione antioraria da $U_{\alpha}$ a $U_{\beta}$ tali che 
+\begin{equation}
+    \theta_{\beta}=\theta_{\alpha}+\pi^*\varphi_{\alpha\beta}
+\end{equation}
+con $0\leq\varphi_{\alpha\beta}<2\pi$.
+
+Con queste definizioni si ha che $$\varphi_{\alpha\beta}+\varphi_{\beta\gamma}-\varphi_{\alpha\gamma}\in2\pi\mathbb{Z}$$ e quindi si può definire un intero $$\epsilon_{\alpha\beta\gamma}=\frac{\varphi_{\alpha\beta}+\varphi_{\beta\gamma}-\varphi_{\alpha\gamma}}{2\pi}$$
+
+L'insieme $\{\epsilon_{\alpha\beta\gamma}\}$ di questi interi fornisce una misura di quanto $\{\varphi_{\alpha\beta}\}$ si distacca rispetto all'essere un cociclo.
+
+Al contrario però le 1-forme $\{d\varphi_{\alpha\beta}\}$ soddisfano la condizione per essere un cociclo, dunque esistono delle 1-forme $\{\xi_{\alpha}\}$ con $\xi_{\alpha}$ definita su $U_{\alpha}$ tali che 
+\begin{equation}
+    \frac{1}{2\pi}d\varphi_{\alpha\beta}=\xi_{\beta}-\xi_{\alpha}
+\end{equation}
+
+con $\xi_{\alpha}=\sum_{\gamma}p_{\gamma}d\varphi_{\alpha\gamma}$, dove $\{p_{\gamma}\}$ è una partizione dell'unità di $M$ subordinata a $\{U_{\alpha}\}$.
+
+Questo chiaramente significa che, applicando $d$ ad entrambi i membri dell'uguaglianza, su $U_{\alpha}\cap U_{\beta}$ si ha $d\xi_{\alpha}=d\xi_{\beta}$, quindi le varie $d\xi_{\alpha}$ si incollano insieme per generare una 2-forma globale $e$ su $M$. $e$
+è chiaramente chiusa ma non è detto sia esatta, dal momento che le $\xi_{\alpha}$ in generale non si incollano per generare una 1-forma su $M$. La classe di coomologia in $H^2(M)$ di $e$ viene detta \textit{classe di Eulero} del fibrato vettoriale orientato $E$ e spesso si scrive $e(E)$ al posto di $e$.
+
+\begin{prop1}
+    La classe di Eulero $e$ non dipende dalla scelta delle $\xi_{\alpha}$.
+    \begin{proof}
+        Se $\{\xi'_{\alpha}\}$ è un altra possibile scelta di $\{\xi_{\alpha}\}$, allora $$\frac{1}{2\pi}d\varphi_{\alpha\beta}=\xi_{\beta}-\xi_{\alpha}=\xi'_{\beta}-\xi'_{\alpha}$$ e quindi $$\xi_{\beta}-\xi'_{\beta}=\xi_{\alpha}-\xi'_{\alpha}=\xi$$ è una forma globale su $M$, ma questo significa che $d\xi_{\alpha}$ e $d\xi'_{\alpha}$ differiscono per una forma esatta.
+    \end{proof}
+\end{prop1}
+
+Mettendo insieme le equazioni (3.5) e (3.6) si ottiene che su $E^0|_{U_{\alpha}\cap U_{\beta}}$ $$\frac{d\theta_{\alpha}}{2\pi}-\pi^*\xi_{\alpha}=\frac{d\theta_{\beta}}{2\pi}-\pi^*\xi_{\beta}$$
+
+Queste forme su $E^0$ si incollano tutte insieme creando una forma $\psi$ che è la forma angolare globale dal momento che ristretta ad ogni fibra diventa la forma angolare $\frac{1}{2\pi}d\theta$, poichè $\pi^*\xi_{\alpha}$ ha supporto sulla sezione zero. Questa forma angolare globale non è chiusa, infatti $$d\psi=d(\frac{d\theta_{\alpha}}{2\pi}-\pi^*\xi_{\alpha})=-\pi^*d\xi_{\alpha}=\pi^*d\xi_{\beta}$$ quindi $$d\psi=-\pi^*e$$
+
+Nel caso in cui $E$ è il fibrato vettoriale banale $\psi$ può essere presa come il pullback della forma $\frac{1}{2\pi}d\theta$ rispetto alla proiezione $E^0=M\times(\mathbb{R}^2\setminus\{0\})\rightarrow\mathbb{R}^2\setminus\{0\}$, in questo caso $\psi$ è chiusa e quindi $e=0$. In questo senso si può vedere che $e$ in realtà rappresenta una misura della torsione del fibrato vettoriale orientato $E$.
+
+La classe di Eulero di un fibrato vettoriale orientato di rango 2 può essere data anche in funzione delle funzioni di transizione $\{g_{\alpha\beta}:U_{\alpha}\cap U_{\beta}\rightarrow SO(2)\}$: infatti identificando $SO(2)$ con il cerchio unitario nei numeri complessi, un suo elemento può essere scritto unicamente come $e^{i\theta}$, quindi si può considerare $$\theta_{\alpha}-\theta_{\beta}=\pi^*\frac{1}{i}log(g_{\alpha\beta})$$ e dunque, per l'equazione (3.5) $$\pi^*\varphi_{\alpha\beta}=-\pi^*\frac{1}{i}log(g_{\alpha\beta})$$
+
+Dal momento che la proiezione $\pi$ ha rango massimo $\pi^*$ è iniettiva quindi $$\varphi_{\alpha\beta}=-\frac{1}{i}log(g_{\alpha\beta})$$
+
+Sia $\{p_{\gamma}\}$ una partizione dell'unità di $M$ subordinata a $\{U_{\gamma}\}$, allora si ottiene che $$\xi_{\alpha}=\frac{1}{2\pi}\sum_{\gamma}p_{\gamma}d\varphi_{\gamma\alpha}=-\frac{1}{2\pi i}\sum_{\gamma}p_{\gamma}dlog(g_{\gamma\alpha})$$ così su $U_{\alpha}$
+\begin{equation}
+e(E)=-\frac{1}{2\pi i}\sum_{\gamma}d(p_{\gamma}dlog(g_{\gamma\alpha}))
+\end{equation}
+
+\begin{prop1}
+    La classe di Eulero è funtoriale, ovvero se $f:N\rightarrow M$ è una mappa tra varietà ed $E$ è un fibrato vettoriale orientato di rango 2 su $M$, allora $$e(f^{-1}E)=f^*e(E)$$
+    \begin{proof}
+        Dal momento che le funzioni di transizione di $f^{-1}E$ sono $f^*g_{\alpha\beta}$ la dimostrazione è ovvia grazie all'equazione (3.7).
+    \end{proof}
+\end{prop1}
+
+Si dimostra senza troppi problemi che
+
+\begin{prop1}
+    La mappa di pullback su $M$ della classe di Thom rispetto alla funzione sezione zero $s_0(x)=(x,0)$ è la classe di Eulero.
+\end{prop1}
+
+Di conseguenza si può trovare una formula esplicita per la classe di Thom in funzione delle funzioni di transizione: infatti se $\{U_{\alpha}\}$ è un ricoprimento aperto banalizzante per $E$, $\{p_{\alpha}\}$ è una partizione dell'unità di $M$ subordinata a $\{U_{\alpha}\}$, $\{g_{\alpha\beta}\}$ sono le funzioni di transizione e $\rho(r)$ è la funzione nella Figura 3.1, allora si può dimostrare che su $U_{\alpha}$ $$\Phi=d\Bigg(\rho(r)\frac{d\theta_{\alpha}}{2\pi}\Bigg)+\frac{1}{2\pi i}d(\rho(r)\pi^*\sum_{\gamma}p_{\gamma}dlog(g_{\gamma\alpha}))$$
+
+\begin{thebibliography}{90}             %crea l'ambiente bibliografia
+\rhead[\fancyplain{}{\bfseries \leftmark}]{\fancyplain{}{\bfseries
+\thepage}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%aggiunge la voce Bibliografia
+                                        %   nell'indice
+\addcontentsline{toc}{chapter}{Bibliografia}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%provare anche questo comando:
+%%%%%%%%%%%\addcontentsline{toc}{chapter}{\numberline{}{Bibliografia}}
+\bibitem{K1} Raoul Bott e Loring W. Tu: Differenzial Forms In Algebraic Topology, Graduate texts in mathematics, New York - 1924
+\bibitem{K2} nlab, trivial vector bundle, 
+
+https://ncatlab.org/nlab/show/trivial+vector+bundle
+\bibitem{K3} Wikipedia, Cohomology, 
+
+https://en.wikipedia.org/wiki/Cohomology
+\bibitem{K4} Wikipedia, Mayer-Vietoris sequence, 
+
+https://en.wikipedia.org/wiki/Mayer–Vietoris\_sequence
+\bibitem{K5} nlab, fiber integration, 
+
+https://ncatlab.org/nlab/show/fiber+integration
+\bibitem{K6} MathOverflow, Intuition behind Thom class, 
+
+https://mathoverflow.net/questions/107825/intuition-behind-thom-class
+\end{thebibliography}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\chapter*{Ringraziamenti}
+\thispagestyle{empty}
+Beh, che dire, siamo giunti alla fine di questo viaggio e questi 3 anni sono assolutamente volati. In questo periodo credo di essere maturato tanto e proprio questo distacco rispetto alla persona che ero mi fa capire quanto ancora il mio percorso sia solo agli inizi, per raggiungere prima o poi delle mete, tanto concrete quanto astratte, che al momento non posso nemmeno immaginare.
+Questo percorso, però, non l'ho intrapreso da solo e per questo siamo qua:
+Ringrazio prima di tutti la mia famiglia, che ha fatto sì che tutto questo potesse accadere.
+Ringrazio i miei amici Ludo, Matti, Richi, Just e Diego, che sono, prima di tutto, i ragazzi con cui sono cresciuto e i miei migliori amici.
+Ringrazio le ragazze del Limasesagisa, che per quanto spesso siano irrintracciabili sono comunque parte costante della mia vita.
+Ringrazio il gruppo degli Sfrattati, con il quale credo di aver finalmente trovato degli insostituibili amici, molto più simili alla persona che sono.
+Ringrazio il DP, che per quanto ultimamente lo frequento meno, sono e rimarranno per sempre un divertentissimo sfondo della mia vita.
+Ringrazio i ragazzi della gimarra, con cui condivido la patria.
+Ringrazio Michi, Luchino e i compagni di corso, che sono stati fondamentali per la mia sanità mentale in questi 3 anni.
+Ringrazio Leo, Viola e Arianna che mi hanno aiutato a cambiare il modo che avevo di vedere il mondo, riuscendo a farmi avere una mentalità molto più aperta ed oggettiva.
+Inoltre dei ringraziamenti speciali vanno a Giorgio, Tommi, Vitto e la Tina per avermi spesso condiviso i memini più belli che io abbia mai visto, alla Sara Cre per non lasciarmi mai da solo sotto l'ombrellone (o quasi) e per avermi permesso di giocare ogni tanto con i suoi amici a pallavolo, a Lollo Spano per aver iniziato una partita che non dovrà mai finire, a Sanco per aver fatto la mia miglior imitazione mai sentita e a Giova per avermi prestato la chiavetta.
+Infine a me stesso ho deciso volontariamente di non ringraziare, perchè nella mia vita voglio sempre cercare di ottenere di più e i ringraziamenti preferisco lasciarli a quando avrò trovato tutto quello che cerco.
+\end{document}
+
+
+
+
+%Thom-Gysin sequence https://mathoverflow.net/questions/107825/intuition-behind-thom-class
