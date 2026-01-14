@@ -1,0 +1,333 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
+%Information to be included in the title page:
+\usepackage[italian]{babel}
+\usepackage{amsmath,amssymb,amscd,amsfonts,amsthm,color}
+%\usetheme{Pittsburgh} %
+\usecolortheme{orchid}
+\usepackage[all]{xy}
+\usepackage{graphicx}
+\usepackage{tikz-cd}
+\tikzset{curarrow/.style={rounded corners=8pt,execute at begin to={every node/.style={fill=red}}, to path={-- ([xshift=50pt]\tikztostart.center) |- (#1) node[fill=white] {$\scriptstyle d^*$} -| ([xshift=-50pt]\tikztotarget.center) -- (\tikztotarget)}}}
+
+\setbeamertemplate{footline}[frame number]
+%\usecolortheme{seagull}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+
+
+\title{La Coomologia di De Rham}
+\author{Marco Vitali}
+\institute{Laurea triennale in matematica}
+
+\date{29/09/2023}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Nozioni preliminari}
+\pause
+
+\begin{block}{Definizione varietà differenziabile}
+
+$M$ varietà di dimensione $n$ si dice differenziabile se dotata di una struttura differenziabile, ovvero se:
+\begin{itemize}
+\item Ha un atlante $\{U_{\alpha}\}_{\alpha\in I}$ di aperti omeomorfi ad $\mathbb{R}^n$ tramite gli omeomorfismi $\{\phi_{\alpha}\}_{\alpha\in I}$
+\item Le funzioni di transizione $g_{\alpha\beta}$ sono diffeomorfismi
+\item $\{U_{\alpha}\}_{\alpha\in I}$ è minimale rispetto all'inclusione.
+\end{itemize}
+
+\end{block}
+\pause
+
+\bigskip
+\begin{minipage}{0.5\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{immagine_tesi6.png}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\centering
+
+\pause
+
+k-forme differenziali
+\medskip
+\pause
+
+Orientazione
+\medskip
+
+Integrazione
+\medskip
+
+Fibrati
+
+\end{minipage}
+
+
+\end{frame} 
+
+\begin{frame}{Il complesso di De Rham}
+\pause
+\bigskip
+
+Il complesso delle forme differenziali su una varietà $M$ con l'operatore differenziale $d$ di differenziazione esterna si dice Complesso di De Rham di $M$ $\Omega^*(M)$
+\bigskip
+\pause
+
+La coomologia di questo complesso si dice Coomologia di De Rham di $M$.
+
+\bigskip
+\pause
+$$H_{DR}^q(\mathbb{R}^n)=H^q(\mathbb{R}^n)=\frac{\{\text{q-forme chiuse}\}}{\{\text{q-forme esatte}\}}$$
+
+\bigskip
+\pause
+
+Le stesse definizioni posso essere date analizzando solo le forme su $M$ che hanno supporto compatto, dando vita così alla Coomologia di De Rham a supporto compatto
+
+\end{frame}
+
+\begin{frame}{La sequenza di Mayer-Vietoris}
+\pause
+
+Avendo una funzione $C^{\infty}$ tra varietà $f:N\rightarrow M$ si definisce una mappa di pullback $f^*:\Omega^*(M)\rightarrow\Omega^*(N)$ definita componendo le forme differenziali con $f$ 
+
+\bigskip
+\pause
+
+Considerando le inclusioni
+\begin{center}
+\begin{tikzcd}
+    [ampersand replacement=\&, column sep=small]
+     U\cap V \arrow[r, hook, shift left, "\delta_0"] 
+    \arrow[r, hook, shift right, "\delta_1" ']
+    \&U\coprod V \arrow[r, hook, "i"]
+    \&M
+\end{tikzcd}
+\end{center}
+
+si ottiene una sequenza esatta corta di complessi
+
+\begin{center}
+\begin{tikzcd}
+    [ampersand replacement=\&, column sep=small]
+    0 \arrow[r]
+    \&\Omega^*(M) \arrow[r, "i^*"]
+    \&\Omega^*(U)\oplus \Omega^*(V) \arrow[r, "\delta"]
+    \&\Omega^*(U\cap V) \arrow[r]
+    \&0
+\end{tikzcd}
+\end{center}
+con $\delta\big((\omega,\tau)\big)=\tau-\omega$
+
+\end{frame}
+
+\begin{frame}{La sequenza di Mayer-Vietoris}
+\pause
+
+Essendo una sequenza esatta corta dà vita alla sequenza esatta lunga in coomologia 
+\begin{center}
+\begin{tikzcd}
+    [ampersand replacement=\&, column sep=small]
+    H^{k+1}(M) \arrow[r, "i^{*}"] \& H^{k+1}(U) \oplus H^{k+1}(V) \arrow[r] \& \cdots \\
+    H^{k}(M) \arrow[r, "i^{*}"] \& H^{k}(U) \oplus H^{k}(V) \arrow[r, "\delta"] \arrow[draw=none]{u}[name=Y, shape=coordinate]{} \arrow[draw=none]{d}[name=Z,shape=coordinate]{} \& H^{k}(U \cap V) \arrow[curarrow=Y]{ull}{} \\
+    \cdots \arrow[r] \& H^{k-1}(U) \oplus H^{k-1}(V) \arrow[r, "\delta"] \& H^{k-1}(U \cap V) \arrow[curarrow=Z]{ull}{}
+\end{tikzcd}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{La sequenza di Mayer-Vietoris}
+\pause
+
+Per il complesso di De Rham a supporto compatto invece vale
+\begin{center}
+\begin{tikzcd}
+    [ampersand replacement=\&, column sep=small]
+    H_c^{k+1}(U\cap V) \arrow[r, "\delta"] \& H_c^{k+1}(U) \oplus H_c^{k+1}(V) \arrow[r] \& \cdots \\
+    H_c^{k}(U\cap V) \arrow[r, "\delta"] \& H_c^{k}(U) \oplus H_c^{k}(V) \arrow[r, "i^*+j^*"] \arrow[draw=none]{u}[name=Y, shape=coordinate]{} \arrow[draw=none]{d}[name=Z,shape=coordinate]{} \& H_c^{k}(M) \arrow[curarrow=Y]{ull}{} \\
+    \cdots \arrow[r] \& H_c^{k-1}(U) \oplus H_c^{k-1}(V) \arrow[r, "i^*+j^*"] \& H_c^{k-1}(M) \arrow[curarrow=Z]{ull}{}
+\end{tikzcd}
+\end{center}
+che inverte il senso di percorrenza rispetto alla precedente sequenza
+
+\end{frame}
+
+\begin{frame}{I lemmi di Poincarè}
+\pause
+
+Tramite degli isomorfismi inversi in coomologia tra $H^*(\mathbb{R}^{n+1})$ e $H^*(\mathbb{R}^n)$ dati dalla proiezione e dalla sezione zero si ottengono due lemmi molto importanti
+\pause
+
+\begin{block}{Lemma di Poincarè}
+    \begin{equation*}
+        H^q(\mathbb{R}^n)=H^q(\mathbb{R}^0)=
+        \begin{cases}
+        \mathbb{R} & se \quad q=0 \\
+        0 & se \quad q\neq0
+       \end{cases}
+    \end{equation*}
+\end{block}
+\pause
+
+\begin{block}{Lemma di Poincarè a supporto compatto}
+    \begin{equation*}
+        H_c^q(\mathbb{R}^n)=
+        \begin{cases}
+        \mathbb{R} & se \quad q=n \\
+        0 & se \quad q\neq n
+       \end{cases}
+    \end{equation*}
+\end{block}
+
+\end{frame}
+
+\begin{frame}{La dualità di Poincarè}
+Tramite un metodo di dimostrazione molto importante, detto Argomento di Mayer-Vietoris, che coinvolge ampiamente il Lemma dei 5, si riesce a mostrare un risultato fondamentale per lo studio della Coomologia di De Rham
+\pause
+\smallskip
+
+\begin{block}{Dualità di Poincarè}
+    Se $M$ è una varietà orientabile di dimensione $n$ allora
+    $H^q(M)\simeq(H_c^{n-q}(M))^*$
+\end{block}
+\pause
+\bigskip
+
+L'opposto $H_c^q(M)\simeq(H^{n-q}(M))^*$ però non è sempre vero.
+
+\end{frame}
+
+\begin{frame}{La Formula di Künneth}
+\pause
+
+Utilizzando nuovamente l'argomento di Mayer-Vietoris si dimostra un'importante formula che rende possibile calcolare la coomologia di un prodotto di due varietà
+\smallskip
+
+\begin{block}{Formula di Künneth}
+    Se $M$ e $F$ sono due varietà con un good cover finito allora $H^*(M\times F)=H^*(M)\otimes H^*(F)$
+\end{block}
+\bigskip
+
+In questa formula si intende che $H^n(M\times F)=\bigoplus_{p+q=n}\Big(H^p(M)\otimes H^q(F)\Big)$
+
+\end{frame}
+
+\begin{frame}{Duale di Poincarè}
+    A questo punto si hanno tutte le nozioni necessarie per definire il Duale di Poincarè
+\pause
+\smallskip
+
+\begin{block}{Duale di Poincarè}
+    Se $M$ è una varietà orientata di dimensione $n$ e $S$ è una sua sottovarietà chiusa orientata di dimensione $k$ allora esiste ed è unica una classe di coomologia $\eta_S\in H^{n-k}(M)$, detta Duale di Poincarè di $S$ in $M$, tale che $\forall\omega\in H_c^k(M)$ $$\int\limits_Si^*\omega=\int\limits_M\omega\wedge\eta_S$$ con $i:S\rightarrow M$ inclusione
+\end{block}
+\pause
+\medskip
+
+Per dimostrare la sua esistenza si sfrutta che l'integrazione lungo una sottovarietà è un funzionale lineare, insieme alla dualità di Poincarè
+
+\end{frame}
+
+\begin{frame}{Duale di Poincarè}
+\pause
+
+Analogamente si può definire un duale di Poincarè per le forme compatte detto Duale di Poincarè Compatto, ma è necessario porre come ipotesi che la varietà abbia un good cover finito
+\pause
+\medskip
+
+\begin{block}{Duale di Poincarè Compatto}
+    Se $M$ è una varietà orientata di dimensione $n$ con un good cover finito e $S$ è una sua sottovarietà chiusa orientata di dimensione $k$ allora esiste ed è unica una classe di coomologia $\eta'_S\in H_c^{n-k}(M)$, detta Duale di Poincarè Compatto di $S$ in $M$, tale che $\forall\omega\in H^k(M)$ $$\int\limits_Si^*\omega=\int\limits_M\omega\wedge\eta'_S$$ con $i:S\rightarrow M$ inclusione
+\end{block}
+
+\end{frame}
+
+\begin{frame}{Fibrati vettoriali}
+\pause
+
+Da ora in poi l'attenzione si sposterà drasticamente sul calcolare la coomologia dei fibrati vettoriali costruiti su varietà
+\pause
+
+\begin{minipage}{0.35\textwidth}
+\centering
+
+\bigskip
+\includegraphics[width=0.6\textwidth]{immagine_tesi7.png}
+\end{minipage}
+\hfill
+\begin{minipage}{0.6\textwidth}
+
+\begin{block}{Definizione Fibrato vettoriale}
+    Se $\pi:E\rightarrow M$ è una suriezione tra varietà la cui fibra $\pi^{-1}(x)$ è uno spazio vettoriale $\forall x\in M$, allora $\pi$ si dice fibrato vettoriale reale $C^{\infty}$ di rango $n$ se esistono
+    \begin{itemize}
+    \item Un ricoprimento aperto $\{U_{\alpha}\}_{\alpha\in I}$ di $M$ 
+    \item Dei diffeomorfismi che preservano le fibre $\phi_{\alpha}:E|_{U_{\alpha}}=\pi^{-1}(U_{\alpha})\rightarrow U_{\alpha}\times\mathbb{R}^n$ che sono degli isomorfismi lineari su ogni fibra.
+    \end{itemize}
+\end{block}
+
+\end{minipage}
+    
+\end{frame}
+
+\begin{frame}{Coomologia Compatta Verticale}
+\pause
+
+Nei fibrati vettoriali oltre alle due già definite esiste un terzo tipo di coomologia, ovvero la Coomologia a Supporto Compatto lungo la Componente Verticale, o più semplicemente Coomologia Compatta Verticale
+\pause
+\bigskip
+
+
+Anche per quest'ultima esiste una versione dei lemmi di Poincarè
+\medskip
+
+\begin{block}{Lemma di Poincarè compatto lungo la componente verticale}
+    Se $M$ è una varietà di dimensione $n$ allora $$H_{cv}^*(M\times\mathbb{R}^n)\simeq H^{*-n}(M)$$
+\end{block}
+    
+\end{frame}
+
+\begin{frame}{La Classe di Thom}
+\pause
+
+Generalizzando questo lemma al caso in cui si ha un fibrato vettoriale $E$ di rango $n$ su una varietà $M$, questo isomorfismo Prende il nome di Isomorfismo di Thom $$T:H^*(M)\rightarrow H_{cv}^{n+*}(E)$$
+\pause
+\medskip
+    
+    
+L'immagine della funzione costante $1_M$ tramite questo isomorfismo prende il nome di Classe di Thom ed è caratterizzata in modo particolare
+\pause
+\medskip
+
+\begin{block}{Teorema}
+    La Classe di Thom di un fibrato vettoriale $E$ orientato di rango $n$ si può caratterizzare unicamente come la classe di omologia in $H_{cv}^n(E)$ che si restringe in ogni fibra $F$ ad un generatore di $H_c^n(F)$
+\end{block}
+
+\end{frame}
+
+\begin{frame}{La Classe di Thom e Il Duale di Poincarè}
+\pause
+
+È molto interessante notare come la Classe di Thom e Il Duale di Poincarè siano in fondo concetti coincidenti, infatti applicando direttamente la definizione di Duale di Poincarè alla Classe di Thom si ottiene
+\pause
+\medskip
+
+\begin{block}{Teorema}
+    \begin{itemize}
+        \item Il duale di Poincarè di una sottovarietà chiusa orientata $S$ di una varietà orientata $M$ e la classe di Thom del fibrato vettoriale normale di $S$ possono essere rappresentati dalla stessa forma
+        \item La classe di Thom di un fibrato vettoriale orientato $\pi:E\rightarrow M$ su una varietà orientata $M$ e il duale di Poincarè della sezione zero di $E$ possono essere rappresentati dalla stessa forma
+    \end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\begin{center}
+     \Large Grazie dell'attenzione!
+\end{center}
+\end{frame}
+
+\end{document}
