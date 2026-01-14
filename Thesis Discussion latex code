@@ -1,0 +1,105 @@
+\documentclass[12pt,a4paper,openright,twoside]{report}
+
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+
+\begin{document}
+Buongiorno a tutti sono Marco Vitali e questa è la mia tesi intitolata La Coomologia di De Rham.
+
+Lo scopo di questa tesi è quello di illustrare i principali sviluppi della coomologia di De Rham, ovvero un potente strumento che consente di trovare invarianti per diffeomorfismi e invarianti topologici per le varietà studiate, passando attraverso importanti risultati quali la dualità di Poincarè e la classe di Thom.
+
+Per poter discutere di questi argomenti sono necessarie delle nozioni prelminari, una su tutte la definizione di varietà differenziabile: una varietà $M$ di dimensione $n$ si dice differenziabile se è dotata di una struttura differenziabile, ovvero se:
+
+1. Ha un atlante $\{U_{\alpha}\}_{\alpha\in I}$ di aperti omeomorfi ad $\mathbb{R}^n$ tramite gli omeomorfismi $\{\phi_{\alpha}\}_{\alpha\in I}$.
+
+2. Le funzioni di transizione $g_{\alpha\beta}$ sono diffeomorfismi.
+
+3. L'atlante deve essere minimale rispetto all'inclusione.
+
+Tutto ciò di cui andremo a parlare, in particolare il complesso di De Rham, si baserà sulle k-forme differenziali definite sulla varietà.
+
+Altri concetti fondamentali in questo ambito riguardanti le varietà sono:
+
+1. L'orientabilità, e quindi il riuscire a definire o meno un'orientazione su di essa, tramite un atlante le cui funzioni di transizione hanno sempre jacobiano positivo.
+
+2. L'integrazione delle k-forme differenziali lungo la varietà.
+
+3. I fibrati, ovvero funzioni suriettive nelle varietà che come preimmagine di ogni punto hanno un certo spazio vettoriale definito "fibra".
+
+A questo punto possiamo già iniziare a parlare di complesso di De Rham:
+
+Il complesso delle forme differenziali su una varietà $M$ con l'operatore differenziale $d$ di differenziazione esterna si dice Complesso di De Rham di $M$ e si denota $\Omega^*(M)$.
+
+L'operatore $d$ agisce fondamentalmente "derivando" rispetto ad una variabile per volta le forme e porta quindi una k-forma differenziale in una (k+1)-forma differenziale.
+
+La coomologia di questo complesso si dice appunto Coomologia di De Rham e si definisce tramite il quoziente delle forme chiuse rispetto a quelle esatte, che rappresenta una stima di quante possano essere le soluzioni non banali dell'equazione differenziale $d\theta=0$ rispetto a quelle banali.
+
+Le stesse definizioni posso essere date analizzando solo le forme su $M$ che hanno supporto compatto, dando vita così alla Coomologia di De Rham a supporto compatto.
+
+Tenendo conto che durante tutta l'esposizione si considereranno solo funzioni $C^{\infty}$, se si prende una funzione $f:N\rightarrow M$ si può definire una mappa di pullback $f^*:\Omega^*(M)\rightarrow\Omega^*(N)$, quindi invertendo, definita componendo le forme differenziali con $f$, ovviamente non si possono comporre realmente una forma ed una funzione, ma è chiaro che si intende di comporre con $f$ le funzioni che definiscono la forma.
+
+Dunque considerando le inclusioni da $U\cap V$ in $U\coprod V$ in $M$ si ottiene una sequenza esatta corta di complessi che va da 0 in $\Omega^*(M)$ in 
+$\Omega^*(U)$ somma diretta con $\Omega^*(V)$ in $\Omega^*(U\cap V)$ in 0, dove la funzione chiamata $\delta$ è la differenza tra forme.
+
+Per un teorema classico di topologia algebrica da una sequenza esatta corta di complessi nasce una sequenza esatta lunga in coomologia, che nel nostro caso viene rappresentata in questo modo.
+
+Per il complesso di De Rham a supporto compatto vale un'analoga sequenza esatta lunga in coomologia, che però inverte il senso di percorrenza perchè il pullback di una forma a supporto compatto non è detto abbia supporto compatto, dunque si definisce al posto della mappa di pullback una mappa di pushforward.
+
+Tramite degli isomorfismi inversi in coomologia tra $H^*(\mathbb{R}^{n+1})$ e $H^*(\mathbb{R}^n)$ dati dalla proiezione $\pi$, che manda $(x_1,\ldots,x_{n+1})$ in $(x_1,\ldots,x_n)$, e dalla sezione zero $s$, che manda $(x_1,\ldots,x_n)$ in $(x_1,\ldots,x_n,0)$, si ottengono due lemmi molto importanti detti Lemma di Poincarè e Lemma di Poincarè a Supporto Compatto, che calcolano la coomologia di $\mathbb{R}^n$, la quale risulta essere $\mathbb{R}$ in dimensione 0 e 0 nelle altre dimensioni, e la sua coomologia a supporto compatto, $\mathbb{R}$ in dimensione $n$ e 0 nelle altre dimensioni.
+
+Questo viene reso possibile da un operatore differenziale $K$ che rappresenta l'integrazione di una forma lungo l'ultima variabile, definito nella loro dimostrazione.
+
+Grazie a questi due lemmi diventa ad esempio possibile calcolare la coomologia di $S^n$.
+
+L'argomento di Mayer-Vietoris è un metodo di dimostrazione molto valido che consiste nell'accoppiare le due sequenze di Mayer-Vietoris percorse in senso opposto, per poi applicare l'integrazione sulla varietà $M$ al prodotto wedge di una forma in $H^q(M)$ con una forma a supporto compatto in $H_c^{n-q}(M)$.
+
+In questo modo, sfruttando il fatto che un funzionale lineare non degenere su $V\otimes W$ induce un isomorfismo tra $V$ e $(W)^*$, si ottiene un isomorfismo tra la coomologia q-esima di $M$ e il duale della sua (n-q)-esima coomologia a supporto compatto, e utilizzando il lemma dei 5 a dovere si ottiene che questo isomorfismo si estende alla coomologia k-esima di $M$ per ogni k.
+
+Questo risultato viene detto Dualità di Poincarè.
+
+L'opposto però non è sempre vero e questa asimmetria deriva dal fatto che il duale di una somma diretta è un prodotto diretto, ma il duale di un prodotto diretto non è una somma diretta.
+
+In ogni caso si dimostra che questo opposto è valido per varietà con un good cover finito.
+
+Sfruttando nuovamente l'argomento di Mayer-Vietoris si può ottenere la Formula di Künneth che permette di calcolare la coomologia di un prodotto di varietà come prodotto delle loro coomologie.
+
+A questo punto, tenendo conto della dualità di Poincarè non risulta troppo difficile comprendere quello che si dice Duale di Poincarè, ovvero considerando una varietà orientata $M$ di dimensione $n$ ed una sua sottovarietà orientata $S$ di dimensione $k$, si può associare all'integrazione lungo $S$ delle k-forme a supporto compatto, che è un elemento del duale di $H_c^{k}(M)$, un unica classe di coomologia in $H^{n-k}(M)$, che si dice appunto Duale di Poincarè di $S$ in $M$.
+
+In modo esattamente analogo ma per varietà con un good cover finito si può definire un Duale di Poincarè compatto che è una classe di coomologia in $H_c^{n-k}(M)$ che corrisponde unicamente all'integrazione lungo $S$ delle k-forme.
+
+Da ora in poi l’attenzione si sposterà drasticamente sul calcolare la coomologia dei fibrati vettoriali costruiti su varietà, ma prima di tutto è necessario comprendere cosa sono i fibrati vettoriali:
+
+Se $\pi:E\rightarrow M$ è una suriezione tra varietà la cui fibra $\pi^{-1}(x)$ è uno spazio vettoriale $\forall x\in M$, allora $\pi$ si dice fibrato vettoriale reale $C^{\infty}$ di rango $n$ se esistono:
+
+1. Un ricoprimento aperto $\{U_{\alpha}\}_{\alpha\in I}$ di $M$ 
+
+2. Dei diffeomorfismi che preservano le fibre $\phi_{\alpha}$ che vanno da $\pi^{-1}(U_{\alpha})$ ad $U_{\alpha}\times\mathbb{R}^n$ che sono degli isomorfismi lineari su ogni fibra.
+
+Nei fibrati vettoriali oltre alle due già definite esiste un terzo tipo di coomologia, ovvero la Coomologia a Supporto Compatto lungo la Componente Verticale, o più semplicemente Coomologia Compatta Verticale, che considera come ci si può aspettare tutte le forme che ristrette ad ogni fibra hanno supporto compatto.
+
+Anche per questa coomologia esiste una versione dei lemmi di Poincarè che dice che se $M$ è una varietà di dimensione $n$ allora c'è un isomorfismo tra $H_{cv}^*(M\times\mathbb{R}^n)$ e $H^{*-n}(M)$, rappresentato da una mappa detta integrazione lungo la componente verticale.
+
+Generalizzando questo lemma ai fibrati vettoriali $E$ di rango $n$ su una varietà $M$ si può ottenere che questo isomorfismo vale ancora ed il suo inverso $T$ si dice Isomorfismo di Thom.
+
+L'immagine della funzione $1_M$ che vale costantemente 1 su tutta la varietà è una classe in $H_{cv}^n(E)$ che si dice Classe di Thom ed è di fondamentale importanza in quanto un teorema stabilisce che essa può essere caratterizzata unicamente come la classe di coomologia in $H_{cv}^n(E)$ che si restringe ad un generatore di ogni fibra.
+
+Inoltre la classe di Thom ha un collegamento molto stretto con il duale di Poincarè, infatti si arriva a dimostrare tramite un calcolo diretto che:
+
+1. Il Duale di Poincarè di una sottovarietà chiusa orientata $S$ di una varietà orientata $M$ e la classe di Thom del fibrato vettoriale normale di $S$ possono essere rappresentati dalla stessa forma.
+
+2. La classe di Thom di un fibrato vettoriale orientato $\pi:E\rightarrow M$ su una varietà orientata $M$ e il duale di Poincarè della sezione zero di $E$ possono essere rappresentati dalla stessa forma.
+
+Grazie dell'attenzione.
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
